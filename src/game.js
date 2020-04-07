@@ -7,7 +7,7 @@ const context = canvas.getContext('2d');
 context.fillStyle = '#000';
 context.fillRect(0,0,canvas.width, canvas.height);
 
-context.scale(20,20);
+//context.scale(20,20);
 // ponizej to probne wyswietlanie obrazka
 
 let electricCharge;
@@ -23,7 +23,7 @@ let myGameArea = {
 };
 
 function startGame() {
-    electricCharge = new ElectricCharge(false,3,3,10,10,
+    electricCharge = new ElectricCharge(false,30,30,100,100,
         "image","./negative_charge.svg.png");
     electron = new Electron(0,0,0,0,600,400);
 
@@ -35,10 +35,10 @@ function drawElectricCharge() {
 }
 
 function drawElectron() {
-    context.fillStyle = 'green';
+    context.fillStyle = 'white';
     let centerX = electron.positionX;
     let centerY = electron.positionY;
-    let radius = 70;
+    let radius = 10;
 
     context.beginPath();
     context.arc(centerX,centerY, radius, 0, 2 * Math.PI,false);

@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5fedfa1a-41e4-4987-a41d-b3220a6673fc" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/electron.js" beforeDir="false" afterPath="$PROJECT_DIR$/electron.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/game.js" beforeDir="false" afterPath="$PROJECT_DIR$/game.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -45,7 +44,7 @@
       <option name="presentableId" value="Default" />
       <updated>1585934878991</updated>
       <workItem from="1585934880278" duration="10875000" />
-      <workItem from="1586075093942" duration="3919000" />
+      <workItem from="1586075093942" duration="6218000" />
     </task>
     <servers />
   </component>
@@ -53,6 +52,10 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="447" y="68" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1586079865636">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="447" y="68" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1586079865636" />
     <state x="767" y="177" key="FileChooserDialogImpl" timestamp="1585935045774">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
