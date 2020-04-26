@@ -9,8 +9,9 @@ export default class Electron  {
             this.positionY = py;
             this.mass = 100;
             this.value = 1;
+            this.radius = 10
     }
-
+    //używana w update
     changePosition(){
         let newVelocityX = this.velocityX;
         let newVelocityY = this.velocityY;
@@ -24,8 +25,8 @@ export default class Electron  {
         this.velocityY = 0;
         this.accelerationX = 0;
         this.accelerationY = 0;
-        this.positionX = 100; //do zmierzenia
-        this.positionY = 100; //do zmierzenia
+        this.positionX = 600; //do zmierzenia
+        this.positionY = 400; //do zmierzenia
     }
 
     update(){

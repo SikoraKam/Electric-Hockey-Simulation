@@ -24,7 +24,7 @@ let myGameArea = {
 
 function startGame() {
     electricCharge = new ElectricCharge(false,30,30,100,100,
-        "image","./negative_charge.svg.png");
+        "image","../negative_charge.svg.png");
     electron = new Electron(0,0,0,0,600,400);
 
     myGameArea.start();
@@ -38,10 +38,10 @@ function drawElectron() {
     context.fillStyle = 'white';
     let centerX = electron.positionX;
     let centerY = electron.positionY;
-    let radius = 10;
+
 
     context.beginPath();
-    context.arc(centerX,centerY, radius, 0, 2 * Math.PI,false);
+    context.arc(centerX,centerY, electron.radius, 0, 2 * Math.PI,false);
     context.fill();
 
 }
