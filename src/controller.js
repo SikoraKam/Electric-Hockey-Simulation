@@ -16,6 +16,13 @@ const levelsOfDifficulty = {
 let difficulty = levelsOfDifficulty.TRAINING;
 
 
+const gameStatus = {
+    ON: 'on',
+    OFF: 'off'
+};
+
+export let gameMode = gameStatus.ON;
+
 let obstaclesForEasy = [];
 let obstaclesForMedium = [];
 let obstaclesForHard = [];
@@ -25,13 +32,27 @@ let electricChargeArray = [];
 
 
 let electron = new Electron(0,0,0,0,600,400);
-let animation = new Animation();
 
 
-function play() {
+// główna funkcja gdzie dodajemy elementy, wyliczamy siłe, sprawdzamy kolizje, przesuwamy elektron itd.
+//używana w funkcji animującej w game.js
+export function play() {
+
+    addElectricCharges();
+    addObstacles();
+
+
     let results = CalculateForce(electricChargeArray);
     changeElectron();
     electron.update();
+
+    if(collisionWithBoundary())
+        gameMode = gameStatus.OFF;
+    if(collisionWithCharge())
+        gameMode = gameStatus.OFF;
+    if(collisionWithObstacle())
+        gameMode = gameStatus.OFF;
+
 
 }
 
@@ -57,6 +78,17 @@ function addObstacles() {
     //TODO: create and add obstacles for every kind of level
 }
 
+function drawElectron() {
+    context.fillStyle = 'white';
+    let centerX = electron.positionX;
+    let centerY = electron.positionY;
+
+
+    context.beginPath();
+    context.arc(centerX,centerY, electron.radius, 0, 2 * Math.PI,false);
+    context.fill();
+
+}
 
 function CalculateForce(electricChargeArray) {
     let results = [];
@@ -90,24 +122,24 @@ function changeElectron(results) {
 function collisionWithCharge(distance,electron, charge) {
     if(distance <= electron.radius + charge.width){
         electron.reset();
-        animation.finish();
+        return true;
     }
 }
 
-function collisionWithObstacle(electron) {
+function collisionWithObstacle() {
     if(difficulty === levelsOfDifficulty.EASY){
        if( obstaclesForEasy.forEach(collisionWithObstacleChecker)){
-            animation.finish();
+            return true;
         }
     }
     if(difficulty === levelsOfDifficulty.MEDIUM){
         if( obstaclesForMedium.forEach(collisionWithObstacleChecker)){
-            animation.finish();
+            return true;
         }
     }
     if(difficulty === levelsOfDifficulty.HARD){
         if( obstaclesForHard.forEach(collisionWithObstacleChecker)){
-            animation.finish();
+            return true;
         }
     }
     
@@ -137,7 +169,7 @@ function collisionWithBoundary() {
     if(electron.positionX < 0 || electron.positionX > canvas.width
         || electron.positionY < 0 || electron.positionY > canvas.height){
         electron.reset();
-        animation.finish();
+        return true;
     }
 }
 
