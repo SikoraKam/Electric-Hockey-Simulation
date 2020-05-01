@@ -16,10 +16,11 @@ export default class InputController extends Controller {
     this.bindButton('.js-start', EVENTS.GAME_START);
     this.bindButton('.js-reset', EVENTS.GAME_RESET);
     this.bindButton('.js-clear', EVENTS.GAME_CLEAR);
+    this.bindButton('.js-pause', EVENTS.PAUSE_TOGGLE);
   }
 
   registerCheckboxListeners() {
-    this.bindCheckbox('.js-pause', EVENTS.PAUSE_TOGGLE);
+
     this.bindCheckbox('.js-puck', EVENTS.PUCK_TOGGLE);
     this.bindCheckbox('.js-trace', EVENTS.TRACE_TOGGLE);
     this.bindCheckbox('.js-field', EVENTS.FIELD_TOGGLE);

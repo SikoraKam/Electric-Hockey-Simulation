@@ -2,6 +2,7 @@ import MainLoop from 'mainloop.js';
 import Group from './models/Group';
 import Puck from './models/Puck';
 import { K_CONST } from './const/game.const';
+import  {GAME_DIFFICULTY} from "./const/game.const";
 
 export default class Game {
   constructor() {
@@ -13,10 +14,12 @@ export default class Game {
       charges: new Group(),
     };
 
-    this.puck = new Puck(100, 100);
+    this.puck = new Puck(100, 300);
     this.groups.puck.add(this.puck);
 
-    this.chargeMass = 25 * 1000;
+    this.chargeMass = 25;
+
+    this.gameDifficulty = GAME_DIFFICULTY.TRAINING;
   }
 
   setup() {

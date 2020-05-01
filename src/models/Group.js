@@ -18,4 +18,9 @@ export default class Group {
   render(ctx) {
     this.objects.forEach((object) => object.render(ctx));
   }
+
+  removeAll(){
+    this.objects = [];
+  }
+
 }

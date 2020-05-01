@@ -5,6 +5,7 @@ export default class BoundingBox {
     this.move(x, y);
   }
 
+  //przypisanie do składowych klasy, rzeczywsite dodawanie velocity  w parametrach
   move(x, y) {
     this.x = x;
     this.y = y;
