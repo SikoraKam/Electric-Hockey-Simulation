@@ -1,0 +1,97 @@
+@import '~ress';
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+:root {
+  --darker: #1d3557;
+  --dark: #1c2541;
+  --main: #3a506b;
+  --accent: #6fffe9;
+  --accent-darker: #5bc0be;
+}
+
+html,
+body,
+.game {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+button {
+  padding: 8px 16px;
+  border-radius: 8px;
+  background-color: var(--accent);
+  color: var(--darker);
+  transition: all 0.2s ease-in;
+  font-weight: bold;
+
+  &:hover {
+    background-color: var(--accent-darker);
+  }
+}
+
+input[type='number'] {
+  background: #fff;
+  padding: 8px;
+  border-radius: 8px;
+
+  &.input--mass {
+    width: 135px;
+  }
+}
+
+.game {
+  display: flex;
+  flex-direction: column;
+
+  &__canvas {
+    flex: 1;
+    width: 100%;
+  }
+
+  &__controls {
+    padding: 36px;
+    color: white;
+    background: var(--darker);
+  }
+}
+
+.container {
+  max-width: 1000px;
+  display: flex;
+  align-items: center;
+  margin: 0 auto 16px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 24px;
+
+  &:last-of-type {
+    margin-right: 0;
+  }
+
+  &--buttons {
+    button {
+      margin-right: 16px;
+    }
+    button:last-child {
+      margin-right: 0;
+    }
+  }
+
+  &--checkbox {
+    input {
+      margin-left: 8px;
+    }
+  }
+}

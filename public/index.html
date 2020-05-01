@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Electric Hockey</title>
+  </head>
+  <body>
+    <div class="game">
+      <canvas class="game__canvas js-canvas"></canvas>
+      <div class="game__controls">
+        <div class="container">
+          <div class="group group--buttons">
+            <button class="js-start">Start</button>
+            <button class="js-reset">Reset</button>
+          </div>
+          <div class="group">
+            <span>Tries: <span class="js-tries">0</span></span>
+          </div>
+          <div class="group group--checkbox">
+            <label for="pause">Pause</label>
+            <input type="checkbox" id="pause" class="js-pause" />
+          </div>
+          <div class="group">
+            <button class="js-clear">Clear</button>
+          </div>
+          <div class="group group--checkbox">
+            <label for="puck">Puck is positive</label>
+            <input type="checkbox" id="puck" class="js-puck" />
+          </div>
+          <div class="group group--checkbox">
+            <label for="trace">Trace</label>
+            <input type="checkbox" id="trace" class="js-trace" />
+          </div>
+          <div class="group group--checkbox">
+            <label for="field">Field</label>
+            <input type="checkbox" id="field" class="js-field" />
+          </div>
+        </div>
+        <div class="container">
+          <div class="group">
+            <b>Difficulty:</b>
+          </div>
+          <div class="group group--checkbox">
+            <label for="d0">Training</label>
+            <input
+              type="radio"
+              name="difficulty"
+              id="d0"
+              value="TRAINING"
+              class="js-practice"
+              checked
+            />
+          </div>
+          <div class="group group--checkbox">
+            <label for="d1">Easy</label>
+            <input
+              type="radio"
+              name="difficulty"
+              id="d1"
+              value="EASY"
+              class="js-easy"
+            />
+          </div>
+          <div class="group group--checkbox">
+            <label for="d2">Medium</label>
+            <input
+              type="radio"
+              name="difficulty"
+              id="d2"
+              value="MEDIUM"
+              class="js-medium"
+            />
+          </div>
+          <div class="group group--checkbox">
+            <label for="d3">Hard</label>
+            <input
+              type="radio"
+              name="difficulty"
+              id="d3"
+              value="HARD"
+              class="js-hard"
+            />
+          </div>
+          <div class="group">
+            <span>Charges: <span class="js-charges">0</span></span>
+          </div>
+          <div class="group group--checkbox">
+            <label for="mass">Mass</label>
+            <input
+              id="mass"
+              class="input--mass js-mass"
+              type="number"
+              min="1"
+              step="1"
+              value="25"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="../src/index.js"></script>
+  </body>
+</html>

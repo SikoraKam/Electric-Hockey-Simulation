@@ -1,0 +1,189 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{mathdots}
+\usepackage{yhmath}
+\usepackage{cancel}
+\usepackage{color}
+\usepackage{siunitx}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{amssymb}
+\usepackage{gensymb}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{comment}
+\usetikzlibrary{fadings}
+\usetikzlibrary{patterns}
+\usetikzlibrary{shadows.blur}
+\usetikzlibrary{shapes}
+
+
+\title{ Zagraj w hokeja z ładunkami elektrycznymi \\
+\large Dokumentacja}
+
+\author{Kamil Sikora,
+Maciej Ładoś,
+Michał Bar}
+\date{April 2020}
+
+\begin{document}
+
+\maketitle
+
+\newpage
+\tableofcontents
+
+\newpage
+
+\section{Opis projektu}
+Projekt polega na symulacji gry w hokeja z dodatnio naładowanym krążkiem poruszanym jedynie poprzez wpływ innych ładunków elektrycznych. Gracz sam decyduje o rozmieszczeniu ładunków. Celem gry jest umieszczenie krążka w bramce. Gra kończy się po strzeleniu gola lub dotknięciu przez krążek któregoś z ładunków bądź przeszkód.\\
+Projekt zdecydowaliśmy się wykonać w JavaScript
+
+\section{Model fizyczny}
+Fizyka w grze jest oparta na prawie Coulomba, którego treść brzmi: Siła wzajemnego oddziaływania dwóch naładowanych cząstek jest wprost proporcjonalna do iloczynu wartości tych ładunków i odwrotnie proporcjonalna do kwadratu odległości między nimi.
+
+$$F=k \frac{q 1 \cdot q 2}{r^{2}}$$
+$F$ - siła elektrostatyczna \\
+$q1, q2$ - ładunki elektryczne \\
+$r$ - odległość \\
+$k$ - stała elektrostatyczna w przybliżeniu równa $9 \cdot 10^9 \frac{N \cdot m^2}{C^2}$
+\\
+
+\noindent Oba ładunki mają również masę, lecz w świecie cząstek, atomów i cząsteczek chemicznych, możemy całkowicie zaniedbać ich wzajemne oddziaływania grawitacyjne.
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.5]{img/Prawo_Coulomba.PNG}
+
+    \caption{Prawo Coulomba- oddziaływanie ładunków}
+    \label{fig:Prawo_Coulomba}
+\end{figure}
+
+\clearpage
+
+\section{Model symulacyjny}
+
+Nasza symulacja operuje w płaszczyźnie dwuwymiarowej. Każdy obiekt będzie posiadał dwie współrzędne - $x$ i $y$. Odległość między ciałami może być zatem wyznaczona jako odległość punktów na płaszczyźnie.
+
+\iffalse
+Oparcie modelu fizycznego, naszego programu, o Prawo Coulomba byłoby bardzo trudne do wykonania. Jest to spowodowane dynamiczną symulacją sił, jakie działają na naładowany krążek. Wykorzystaliśmy więc model oparty o trójkąt prostokątny. Rozgrywka będzie toczyć się w kontekście dwuwymiarowym, wykorzystaliśmy więc standardowy układ kartezjański. 
+Środek elektronu to – \textbf{$e$}, natomiast środek zródła to \textbf{$s$}
+
+
+
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt
+
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,261); %set diagram left start at 0, and has height of 261
+
+%Shape: Right Triangle [id:dp05153070232160961] 
+\draw   (140,61) -- (274.5,218) -- (140,218) -- cycle ;
+%Shape: Right Triangle [id:dp36130500270564525] 
+\draw   (387,62) -- (521.5,219) -- (387,219) -- cycle ;
+%Straight Lines [id:da4371175600607653] 
+\draw    (387,62) -- (387,216) ;
+\draw [shift={(387,219)}, rotate = 270] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+%Straight Lines [id:da010907474739860756] 
+\draw  [dash pattern={on 4.5pt off 4.5pt}]  (387,62) -- (519.5,62.42) ;
+\draw [shift={(522.5,62.43)}, rotate = 180.18] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+%Straight Lines [id:da31420475263437164] 
+\draw    (387,62) -- (519.55,216.72) ;
+\draw [shift={(521.5,219)}, rotate = 229.41] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (8.93,-4.29) -- (0,0) -- (8.93,4.29) -- cycle    ;
+
+% Text Node
+\draw (216,114) node [anchor=north west][inner sep=0.75pt]   [align=left] {$\displaystyle r$};
+% Text Node
+\draw (136,37) node [anchor=north west][inner sep=0.75pt]   [align=left] {$\displaystyle e$};
+% Text Node
+\draw (276.5,221) node [anchor=north west][inner sep=0.75pt]   [align=left] {$\displaystyle s$};
+% Text Node
+\draw (201,227) node [anchor=north west][inner sep=0.75pt]   [align=left] {$\displaystyle y$};
+% Text Node
+\draw (118,131.4) node [anchor=north west][inner sep=0.75pt]    {$x$};
+% Text Node
+\draw (463,115) node [anchor=north west][inner sep=0.75pt]   [align=left] {$\displaystyle r$};
+% Text Node
+\draw (383,38) node [anchor=north west][inner sep=0.75pt]   [align=left] {$\displaystyle e$};
+% Text Node
+\draw (523.5,222) node [anchor=north west][inner sep=0.75pt]   [align=left] {$\displaystyle s$};
+% Text Node
+\draw (448,228) node [anchor=north west][inner sep=0.75pt]   [align=left] {$\displaystyle y$};
+% Text Node
+\draw (365,132.4) node [anchor=north west][inner sep=0.75pt]    {$x$};
+% Text Node
+\draw (361,181.4) node [anchor=north west][inner sep=0.75pt]    {$\vec{F}_{y}$};
+% Text Node
+\draw (493,30.4) node [anchor=north west][inner sep=0.75pt]    {$\vec{F}_{x}$};
+% Text Node
+\draw (411,65) node [anchor=north west][inner sep=0.75pt]   [align=left] {$\displaystyle \alpha $};
+% Text Node
+\draw (519,182.4) node [anchor=north west][inner sep=0.75pt]    {$\vec{F}$};
+
+
+\end{tikzpicture}
+\begin{center}
+Rysunek 2: Rozkład sił oraz oznaczenia
+\end{center}
+
+Przyjmując ładunki $q_1$  $q_2$ za stałe jedyną zmienną od której zależy siła Coulomba $\vec{F}$ jest \textbf{r} - odległość pomiędzy ładunkami. Możemy policzyć odległość między konkretnymi współrzędnymi
+
+$$
+    r = \sqrt{(x_b - x_a)^2 + (y_b - y_a)^2}
+$$
+
+gdzie $ x_a, x_b$ - współrzędne punktu \textbf{e}, $x_a, x_b$- współrzędne punktu \textbf{s}
+Siłę $\vec{F}$ rozkładamy na dwie składowe - $\vec{F}_x$ prostopadłą osi odciętych układu współrzędnych oraz $\vec{F}_y$ równoległą do osi rzędnych. Do obliczenia wartości składowych składowych wypadkowej siły $\vec{F}$ wykorzystujemy funkcje trygonometryczne:
+
+\begin{multicols}{2}
+  \begin{equation}
+    \sin{\alpha} = \frac{|\vec{F}_x|}{r} = \frac{x}{r}
+  \end{equation}\break
+  \begin{equation}
+    \cos{\alpha} = \frac{|\vec{F}_y|}{r} = \frac{y}{r}
+  \end{equation}
+\end{multicols}
+
+Zakładając, że wartości ładunków $q_1$ i $q_2$ są takie same, możemy je pominąć. Łącząc wzór na Prawo Coulomba oraz wyprowadzone wartości sinusa i cosinusa, możemy obliczyć natężenia sił.
+
+\begin{multicols}{2}
+  \begin{equation}
+    F_x = \frac{\sin{\alpha}}{r^2}
+  \end{equation}\break
+  \begin{equation}
+    F_y = \frac{\cos{\alpha}}{r^2}
+  \end{equation}
+\end{multicols}
+
+
+Wiemy, z zasad dynamiki Newtona, że wzór na przyspieszenie ciała to $a = \frac{F}{m}$. Stąd możemy finalnie wyliczyć wartości tego parametru wzdłuż osi układu. 
+
+\begin{multicols}{2}
+  \begin{equation}
+    a_x = k \cdot \frac{\sin{\alpha}}{m \cdot r^2}
+  \end{equation}\break
+  \begin{equation}
+    a_y = k \cdot \frac{\cos{\alpha}}{m \cdot r^2}
+  \end{equation}
+\end{multicols}
+
+\fi
+
+
+\section{Literatura}
+\begin{enumerate}
+    \item Zbigniew Kąkol, Kamil Kutorasiński. Prawo Coulomba. 
+    \item Zbigniew Kąkol. Fizyka. Kraków 2019
+    \item David Halliday, Robert Resnick, Jearl Walker. Podstawy fizyki. Tom 3
+\end{enumerate}
+
+\end{document}
+
