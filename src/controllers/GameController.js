@@ -1,10 +1,8 @@
 import EVENTS from '../const/events.const';
 import { CHARGE_SIZE, ELECTRIC_CHARGE_TYPE } from '../const/charge.const';
 import Controller from './Controller';
-import Puck from '../models/Puck';
 import NegativeCharge from '../models/NegativeCharge';
 import PositiveCharge from '../models/PositiveCharge';
-import { K_CONST } from '../const/game.const';
 
 export default class GameController extends Controller {
   constructor(game) {
@@ -33,6 +31,29 @@ export default class GameController extends Controller {
     this.eventBus.on(EVENTS.MASS_CHANGE, (newMass) => {
       this.game.CHARGE_MASS = newMass;
     });
+    this.eventBus.on(
+      EVENTS.DIFFICULTY_CHANGE,
+      this.onDifficultyChange.bind(this)
+    );
+    this.eventBus.on(EVENTS.GAME_RESET, () => {
+      this.game.reset();
+    });
+    this.eventBus.on(EVENTS.GAME_CLEAR, this.clear.bind(this));
+    this.eventBus.on(EVENTS.GAME_START, () => {
+      this.start();
+    });
+    this.eventBus.on(EVENTS.PAUSE_TOGGLE, () => {
+      this.stop();
+    });
+  }
+
+  clear() {
+    this.game.reset();
+    this.game.groups.charges.removeAll();
+  }
+
+  onDifficultyChange(newDifficulty) {
+    this.game.gameDifficulty = newDifficulty;
   }
 
   placeCharge(type, position) {
