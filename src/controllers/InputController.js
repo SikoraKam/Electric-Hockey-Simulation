@@ -20,7 +20,6 @@ export default class InputController extends Controller {
   }
 
   registerCheckboxListeners() {
-
     this.bindCheckbox('.js-puck', EVENTS.PUCK_TOGGLE);
     this.bindCheckbox('.js-trace', EVENTS.TRACE_TOGGLE);
     this.bindCheckbox('.js-field', EVENTS.FIELD_TOGGLE);

@@ -2,7 +2,8 @@ import MainLoop from 'mainloop.js';
 import Group from './models/Group';
 import Puck from './models/Puck';
 import { K_CONST } from './const/game.const';
-import  {GAME_DIFFICULTY} from "./const/game.const";
+import { GAME_DIFFICULTY } from './const/game.const';
+import { PUCK_POSITION, PUCK_MASS } from './const/puck.const';
 
 export default class Game {
   constructor() {
@@ -14,10 +15,10 @@ export default class Game {
       charges: new Group(),
     };
 
-    this.puck = new Puck(100, 300);
+    this.puck = new Puck(PUCK_POSITION.X, PUCK_POSITION.Y);
     this.groups.puck.add(this.puck);
 
-    this.chargeMass = 25;
+    this.chargeMass = PUCK_MASS;
 
     this.gameDifficulty = GAME_DIFFICULTY.TRAINING;
   }
@@ -48,6 +49,12 @@ export default class Game {
   update(delta) {
     this.puck.acceleration = this.calculateFieldForce();
     Object.values(this.groups).forEach((group) => group.update(delta));
+  }
+
+  reset() {
+    this.puck.velocity = { x: 0, y: 0 };
+    this.puck.acceleration = { x: 0, y: 0 };
+    this.puck.move(PUCK_POSITION.X, PUCK_POSITION.Y);
   }
 
   render() {
