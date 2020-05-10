@@ -7,27 +7,39 @@ import { PUCK_POSITION, PUCK_MASS } from './const/puck.const';
 import HockeyGoal from './models/HockeyGoal';
 import EVENTS from './const/events.const';
 import eventBus from './events/EventBus';
+import Obstacle from './models/Obstacle';
 
 export default class Game {
   constructor() {
     this.setup();
     this.bindLoopFunctions();
 
+    this.obstacles = {
+      training: new Group(),
+      easy: new Group(),
+      medium: new Group(),
+      hard: new Group(),
+    };
+
     this.groups = {
       puck: new Group(),
       charges: new Group(),
       goal: new Group(),
+      obstacles: this.obstacles.training,
     };
     this.eventBus = eventBus;
 
     this.goal = new HockeyGoal(700, 270, 40, 60);
     this.groups.goal.add(this.goal);
+
     this.puck = new Puck(PUCK_POSITION.X, PUCK_POSITION.Y);
     this.groups.puck.add(this.puck);
 
     this.chargeMass = PUCK_MASS;
 
     this.gameDifficulty = GAME_DIFFICULTY.TRAINING;
+
+    this.createObstacles();
   }
 
   setup() {
@@ -75,6 +87,12 @@ export default class Game {
     if (this.goal.touches(this.puck)) {
       this.eventBus.emit(EVENTS.GOAL);
     }
+
+    this.groups.obstacles.objects.forEach((obstacle) => {
+      if (this.puck.touches(obstacle)) {
+        this.eventBus.emit(EVENTS.OBSTACLE_COLLISION);
+      }
+    });
   }
 
   calculateFieldForce() {
@@ -94,5 +112,19 @@ export default class Game {
     });
 
     return force;
+  }
+
+  createObstacles() {
+    this.obstacles.easy.add(new Obstacle(350, 300, 10, 70));
+    this.obstacles.medium.add(
+      new Obstacle(250, 0, 10, 400),
+      new Obstacle(450, 300, 10, 300)
+    );
+    this.obstacles.hard.add(
+      new Obstacle(200, 170, 10, 200),
+      new Obstacle(0, 370, 210, 10),
+      new Obstacle(500, 340, 10, 500),
+      new Obstacle(500, 0, 10, 270)
+    );
   }
 }

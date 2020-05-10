@@ -3,8 +3,8 @@ export default class Group {
     this.objects = [];
   }
 
-  add(object) {
-    this.objects = [...this.objects, object];
+  add(...objects) {
+    this.objects = [...this.objects, ...objects];
   }
 
   remove(object) {
@@ -19,8 +19,7 @@ export default class Group {
     this.objects.forEach((object) => object.render(ctx));
   }
 
-  removeAll(){
+  removeAll() {
     this.objects = [];
   }
-
 }
