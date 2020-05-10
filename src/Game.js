@@ -7,6 +7,7 @@ import { PUCK_POSITION, PUCK_MASS } from './const/puck.const';
 import HockeyGoal from './models/HockeyGoal';
 import EVENTS from './const/events.const';
 import eventBus from './events/EventBus';
+import Obstacle from './models/Obstacle';
 
 export default class Game {
   constructor() {
@@ -17,17 +18,23 @@ export default class Game {
       puck: new Group(),
       charges: new Group(),
       goal: new Group(),
+      obstaclesForEasy: new Group(),
+      obstaclesForMedium: new Group(),
+      obstaclesForHard: new Group(),
     };
     this.eventBus = eventBus;
 
     this.goal = new HockeyGoal(700, 270, 40, 60);
     this.groups.goal.add(this.goal);
+
     this.puck = new Puck(PUCK_POSITION.X, PUCK_POSITION.Y);
     this.groups.puck.add(this.puck);
 
     this.chargeMass = PUCK_MASS;
 
     this.gameDifficulty = GAME_DIFFICULTY.TRAINING;
+
+    this.createObstacles();
   }
 
   setup() {
@@ -75,6 +82,27 @@ export default class Game {
     if (this.goal.touches(this.puck)) {
       this.eventBus.emit(EVENTS.GOAL);
     }
+
+    if (this.gameDifficulty === GAME_DIFFICULTY.EASY) {
+      this.obstaclesForEasy.forEach((obstacle) => {
+        if (this.puck.touches(obstacle))
+          this.eventBus.emit(EVENTS.OBSTACLE_COLLISION);
+      });
+    }
+
+    if (this.gameDifficulty === GAME_DIFFICULTY.MEDIUM) {
+      this.obstaclesForMedium.forEach((obstacle) => {
+        if (this.puck.touches(obstacle))
+          this.eventBus.emit(EVENTS.OBSTACLE_COLLISION);
+      });
+    }
+
+    if (this.gameDifficulty === GAME_DIFFICULTY.HARD) {
+      this.obstaclesForHard.forEach((obstacle) => {
+        if (this.puck.touches(obstacle))
+          this.eventBus.emit(EVENTS.OBSTACLE_COLLISION);
+      });
+    }
   }
 
   calculateFieldForce() {
@@ -94,5 +122,27 @@ export default class Game {
     });
 
     return force;
+  }
+
+  createObstacles() {
+    this.obstaclesForEasy = [new Obstacle(200, 200, 80, 80)];
+    this.obstaclesForEasy.forEach((obstacle) =>
+      this.groups.obstaclesForEasy.add(obstacle)
+    );
+    this.obstaclesForMedium = [
+      // new Obstacle(200, 200, 10, 40),
+      new Obstacle(400, 400, 60, 10),
+    ];
+    this.obstaclesForMedium.forEach((obstacle) =>
+      this.groups.obstaclesForMedium.add(obstacle)
+    );
+    this.obstaclesForHard = [
+      // new Obstacle(200, 200, 10, 40),
+      //new Obstacle(400, 400, 60, 10),
+      new Obstacle(500, 500, 80, 5),
+    ];
+    this.obstaclesForHard.forEach((obstacle) =>
+      this.groups.obstaclesForHard.add(obstacle)
+    );
   }
 }

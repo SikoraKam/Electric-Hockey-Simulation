@@ -50,6 +50,11 @@ export default class GameController extends Controller {
       //consider also this.clear()
       this.game.reset();
     });
+    this.eventBus.on(EVENTS.OBSTACLE_COLLISION, () => {
+      //TODO:display message about endgame
+      //consider also this.clear()
+      this.game.reset();
+    });
   }
 
   clear() {
