@@ -9,6 +9,7 @@ export default class Obstacle extends GameObject {
   update(delta) {}
 
   render(ctx) {
+    ctx.fillStyle = 'black';
     ctx.fillRect(this.x, this.y, this.width, this.height);
   }
 }
