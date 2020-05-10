@@ -14,13 +14,18 @@ export default class Game {
     this.setup();
     this.bindLoopFunctions();
 
+    this.obstacles = {
+      training: new Group(),
+      easy: new Group(),
+      medium: new Group(),
+      hard: new Group(),
+    };
+
     this.groups = {
       puck: new Group(),
       charges: new Group(),
       goal: new Group(),
-      obstaclesForEasy: new Group(),
-      obstaclesForMedium: new Group(),
-      obstaclesForHard: new Group(),
+      obstacles: this.obstacles.training,
     };
     this.eventBus = eventBus;
 
@@ -83,26 +88,11 @@ export default class Game {
       this.eventBus.emit(EVENTS.GOAL);
     }
 
-    if (this.gameDifficulty === GAME_DIFFICULTY.EASY) {
-      this.obstaclesForEasy.forEach((obstacle) => {
-        if (this.puck.touches(obstacle))
-          this.eventBus.emit(EVENTS.OBSTACLE_COLLISION);
-      });
-    }
-
-    if (this.gameDifficulty === GAME_DIFFICULTY.MEDIUM) {
-      this.obstaclesForMedium.forEach((obstacle) => {
-        if (this.puck.touches(obstacle))
-          this.eventBus.emit(EVENTS.OBSTACLE_COLLISION);
-      });
-    }
-
-    if (this.gameDifficulty === GAME_DIFFICULTY.HARD) {
-      this.obstaclesForHard.forEach((obstacle) => {
-        if (this.puck.touches(obstacle))
-          this.eventBus.emit(EVENTS.OBSTACLE_COLLISION);
-      });
-    }
+    this.groups.obstacles.objects.forEach((obstacle) => {
+      if (this.puck.touches(obstacle)) {
+        this.eventBus.emit(EVENTS.OBSTACLE_COLLISION);
+      }
+    });
   }
 
   calculateFieldForce() {
@@ -127,14 +117,14 @@ export default class Game {
   createObstacles() {
     this.obstaclesForEasy = [new Obstacle(200, 200, 80, 80)];
     this.obstaclesForEasy.forEach((obstacle) =>
-      this.groups.obstaclesForEasy.add(obstacle)
+      this.obstacles.easy.add(obstacle)
     );
     this.obstaclesForMedium = [
       // new Obstacle(200, 200, 10, 40),
       new Obstacle(400, 400, 60, 10),
     ];
     this.obstaclesForMedium.forEach((obstacle) =>
-      this.groups.obstaclesForMedium.add(obstacle)
+      this.obstacles.medium.add(obstacle)
     );
     this.obstaclesForHard = [
       // new Obstacle(200, 200, 10, 40),
@@ -142,7 +132,7 @@ export default class Game {
       new Obstacle(500, 500, 80, 5),
     ];
     this.obstaclesForHard.forEach((obstacle) =>
-      this.groups.obstaclesForHard.add(obstacle)
+      this.obstacles.hard.add(obstacle)
     );
   }
 }

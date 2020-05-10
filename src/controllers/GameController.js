@@ -3,6 +3,7 @@ import { CHARGE_SIZE, ELECTRIC_CHARGE_TYPE } from '../const/charge.const';
 import Controller from './Controller';
 import NegativeCharge from '../models/NegativeCharge';
 import PositiveCharge from '../models/PositiveCharge';
+import { GAME_DIFFICULTY } from '../const/game.const';
 
 export default class GameController extends Controller {
   constructor(game) {
@@ -64,6 +65,20 @@ export default class GameController extends Controller {
 
   onDifficultyChange(newDifficulty) {
     this.game.gameDifficulty = newDifficulty;
+    switch (this.game.gameDifficulty) {
+      case GAME_DIFFICULTY.TRAINING:
+        this.game.groups.obstacles = this.game.obstacles.training;
+        break;
+      case GAME_DIFFICULTY.EASY:
+        this.game.groups.obstacles = this.game.obstacles.easy;
+        break;
+      case GAME_DIFFICULTY.MEDIUM:
+        this.game.groups.obstacles = this.game.obstacles.medium;
+        break;
+      case GAME_DIFFICULTY.HARD:
+        this.game.groups.obstacles = this.game.obstacles.hard;
+        break;
+    }
   }
 
   placeCharge(type, position) {
