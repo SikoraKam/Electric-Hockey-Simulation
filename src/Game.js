@@ -4,6 +4,9 @@ import Puck from './models/Puck';
 import { K_CONST } from './const/game.const';
 import { GAME_DIFFICULTY } from './const/game.const';
 import { PUCK_POSITION, PUCK_MASS } from './const/puck.const';
+import HockeyGoal from './models/HockeyGoal';
+import EVENTS from './const/events.const';
+import eventBus from './events/EventBus';
 
 export default class Game {
   constructor() {
@@ -13,8 +16,12 @@ export default class Game {
     this.groups = {
       puck: new Group(),
       charges: new Group(),
+      goal: new Group(),
     };
+    this.eventBus = eventBus;
 
+    this.goal = new HockeyGoal(700, 270, 40, 60);
+    this.groups.goal.add(this.goal);
     this.puck = new Puck(PUCK_POSITION.X, PUCK_POSITION.Y);
     this.groups.puck.add(this.puck);
 
@@ -49,6 +56,8 @@ export default class Game {
   update(delta) {
     this.puck.acceleration = this.calculateFieldForce();
     Object.values(this.groups).forEach((group) => group.update(delta));
+
+    this.handleCollisions();
   }
 
   reset() {
@@ -60,6 +69,12 @@ export default class Game {
   render() {
     this.clear();
     Object.values(this.groups).forEach((group) => group.render(this.ctx));
+  }
+
+  handleCollisions() {
+    if (this.goal.touches(this.puck)) {
+      this.eventBus.emit(EVENTS.GOAL);
+    }
   }
 
   calculateFieldForce() {

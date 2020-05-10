@@ -45,6 +45,11 @@ export default class GameController extends Controller {
     this.eventBus.on(EVENTS.PAUSE_TOGGLE, () => {
       this.stop();
     });
+    this.eventBus.on(EVENTS.GOAL, () => {
+      //TODO:display message about endgame
+      //consider also this.clear()
+      this.game.reset();
+    });
   }
 
   clear() {
