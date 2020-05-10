@@ -30,7 +30,7 @@ export default class GameController extends Controller {
       this.placeCharge.bind(this, ELECTRIC_CHARGE_TYPE.POSITIVE)
     );
     this.eventBus.on(EVENTS.MASS_CHANGE, (newMass) => {
-      this.game.CHARGE_MASS = newMass;
+      this.game.chargeMass = newMass;
     });
     this.eventBus.on(
       EVENTS.DIFFICULTY_CHANGE,
@@ -45,6 +45,11 @@ export default class GameController extends Controller {
     });
     this.eventBus.on(EVENTS.PAUSE_TOGGLE, () => {
       this.stop();
+    });
+    this.eventBus.on(EVENTS.PUCK_TOGGLE, (type) => {
+      type
+        ? (this.game.puck.type = ELECTRIC_CHARGE_TYPE.POSITIVE)
+        : (this.game.puck.type = ELECTRIC_CHARGE_TYPE.NEGATIVE);
     });
     this.eventBus.on(EVENTS.GOAL, () => {
       //TODO:display message about endgame
