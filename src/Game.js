@@ -115,25 +115,16 @@ export default class Game {
   }
 
   createObstacles() {
-    this.obstaclesForEasy = [new Obstacle(350, 300, 10, 70)];
-    this.obstaclesForEasy.forEach((obstacle) =>
-      this.obstacles.easy.add(obstacle)
-    );
-    this.obstaclesForMedium = [
+    this.obstacles.easy.add(new Obstacle(350, 300, 10, 70));
+    this.obstacles.medium.add(
       new Obstacle(250, 0, 10, 400),
-      new Obstacle(450, 300, 10, 300),
-    ];
-    this.obstaclesForMedium.forEach((obstacle) =>
-      this.obstacles.medium.add(obstacle)
+      new Obstacle(450, 300, 10, 300)
     );
-    this.obstaclesForHard = [
+    this.obstacles.hard.add(
       new Obstacle(200, 170, 10, 200),
       new Obstacle(0, 370, 210, 10),
       new Obstacle(500, 340, 10, 500),
-      new Obstacle(500, 0, 10, 270),
-    ];
-    this.obstaclesForHard.forEach((obstacle) =>
-      this.obstacles.hard.add(obstacle)
+      new Obstacle(500, 0, 10, 270)
     );
   }
 }
