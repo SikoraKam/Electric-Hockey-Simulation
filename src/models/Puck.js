@@ -5,7 +5,9 @@ import {
   PUCK_RADIUS,
   PUCK_VELOCITY_DIVIDER,
 } from '../const/puck.const';
+
 import Trace from './Trace';
+
 
 export default class Puck extends ElectricCharge {
   constructor(x, y) {
@@ -43,6 +45,7 @@ export default class Puck extends ElectricCharge {
     if (this.traceIsActive === true) {
       this.trace.render(ctx);
     }
+
     ctx.stroke();
   }
 }

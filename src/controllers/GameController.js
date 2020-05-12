@@ -48,7 +48,6 @@ export default class GameController extends Controller {
     this.eventBus.on(EVENTS.PAUSE_TOGGLE, () => {
       this.stop();
     });
-
     this.eventBus.on(EVENTS.PUCK_TOGGLE, (type) => {
       type
         ? (this.game.puck.type = ELECTRIC_CHARGE_TYPE.POSITIVE)
