@@ -1,6 +1,10 @@
 import ElectricCharge from './ElectricCharge';
-import { ELECTRIC_CHARGE_TYPE } from '../const/charge.const';
-import { PUCK_VELOCITY_DIVIDER } from '../const/puck.const';
+import { CHARGE_SIZE, ELECTRIC_CHARGE_TYPE } from '../const/charge.const';
+import {
+  PUCK_POSITION,
+  PUCK_RADIUS,
+  PUCK_VELOCITY_DIVIDER,
+} from '../const/puck.const';
 
 export default class Puck extends ElectricCharge {
   constructor(x, y) {
