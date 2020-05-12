@@ -6,17 +6,25 @@ import {
   PUCK_VELOCITY_DIVIDER,
 } from '../const/puck.const';
 
+import Trace from './Trace';
+
+
 export default class Puck extends ElectricCharge {
   constructor(x, y) {
     super(x, y, ELECTRIC_CHARGE_TYPE.NEGATIVE);
     this.velocity = { x: 0, y: 0 };
     this.acceleration = { x: 0, y: 0 };
     this.radius = PUCK_RADIUS;
+    this.previousPosition = { x: [], y: [] };
+    this.traceIsActive = false;
+    this.trace = new Trace();
   }
 
   update(delta) {
     this.velocity.x += this.acceleration.x;
     this.velocity.y += this.acceleration.y;
+
+    this.trace.previousPosition.push({ x: this.x, y: this.y });
 
     this.move(
       this.x + (this.velocity.x / PUCK_VELOCITY_DIVIDER) * delta,
@@ -33,6 +41,11 @@ export default class Puck extends ElectricCharge {
     ctx.arc(centerX, centerY, this.radius, 0, 2 * Math.PI);
     ctx.fillStyle = 'grey';
     ctx.fill();
+
+    if (this.traceIsActive === true) {
+      this.trace.render(ctx);
+    }
+
     ctx.stroke();
   }
 }
