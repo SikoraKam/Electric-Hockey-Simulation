@@ -76,6 +76,8 @@ export default class GameController extends Controller {
     this.game.groups.charges.removeAll();
     this.game.tries = 0;
     this.game.chargesCounter = 0;
+    document.querySelector('.js-charges').innerHTML = this.game.chargesCounter;
+    document.querySelector('.js-tries').innerHTML = this.game.tries;
   }
 
   onDifficultyChange(newDifficulty) {
@@ -104,6 +106,7 @@ export default class GameController extends Controller {
         : new PositiveCharge(x, y);
     this.game.groups.charges.add(charge);
     this.game.chargesCounter++;
+    document.querySelector('.js-charges').innerHTML = this.game.chargesCounter;
   }
 
   getCenteredChargePosition({ x, y }) {

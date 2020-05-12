@@ -80,14 +80,12 @@ export default class Game {
     this.puck.velocity = { x: 0, y: 0 };
     this.puck.acceleration = { x: 0, y: 0 };
     this.puck.move(PUCK_POSITION.X, PUCK_POSITION.Y);
-    this.puck.resetTrace();
+    this.puck.trace.resetTrace();
   }
 
   render() {
     this.clear();
     Object.values(this.groups).forEach((group) => group.render(this.ctx));
-    document.querySelector('.js-tries').innerHTML = this.tries;
-    document.querySelector('.js-charges').innerHTML = this.chargesCounter;
   }
 
   handleCollisions() {
@@ -99,6 +97,7 @@ export default class Game {
       if (this.puck.touches(obstacle)) {
         this.eventBus.emit(EVENTS.OBSTACLE_COLLISION);
         this.tries++;
+        document.querySelector('.js-tries').innerHTML = this.tries;
       }
     });
   }
