@@ -39,12 +39,25 @@ export default class GameController extends Controller {
     this.eventBus.on(EVENTS.GAME_RESET, () => {
       this.game.reset();
     });
-    this.eventBus.on(EVENTS.GAME_CLEAR, this.clear.bind(this));
+    this.eventBus.on(EVENTS.GAME_CLEAR, () => {
+      this.clear();
+    });
     this.eventBus.on(EVENTS.GAME_START, () => {
       this.start();
     });
     this.eventBus.on(EVENTS.PAUSE_TOGGLE, () => {
       this.stop();
+    });
+
+    this.eventBus.on(EVENTS.PUCK_TOGGLE, (type) => {
+      type
+        ? (this.game.puck.type = ELECTRIC_CHARGE_TYPE.POSITIVE)
+        : (this.game.puck.type = ELECTRIC_CHARGE_TYPE.NEGATIVE);
+    });
+    this.eventBus.on(EVENTS.TRACE_TOGGLE, (isActive) => {
+      isActive
+        ? (this.game.puck.traceIsActive = true)
+        : (this.game.puck.traceIsActive = false);
     });
     this.eventBus.on(EVENTS.GOAL, () => {
       //TODO:display message about endgame
@@ -61,6 +74,8 @@ export default class GameController extends Controller {
   clear() {
     this.game.reset();
     this.game.groups.charges.removeAll();
+    this.game.tries = 0;
+    this.game.chargesCounter = 0;
   }
 
   onDifficultyChange(newDifficulty) {
@@ -88,6 +103,7 @@ export default class GameController extends Controller {
         ? new NegativeCharge(x, y)
         : new PositiveCharge(x, y);
     this.game.groups.charges.add(charge);
+    this.game.chargesCounter++;
   }
 
   getCenteredChargePosition({ x, y }) {

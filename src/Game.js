@@ -26,6 +26,7 @@ export default class Game {
       charges: new Group(),
       goal: new Group(),
       obstacles: this.obstacles.training,
+      obstaclesForGoal: new Group(),
     };
     this.eventBus = eventBus;
 
@@ -40,6 +41,9 @@ export default class Game {
     this.gameDifficulty = GAME_DIFFICULTY.TRAINING;
 
     this.createObstacles();
+
+    this.tries = 0;
+    this.chargesCounter = 0;
   }
 
   setup() {
@@ -76,11 +80,14 @@ export default class Game {
     this.puck.velocity = { x: 0, y: 0 };
     this.puck.acceleration = { x: 0, y: 0 };
     this.puck.move(PUCK_POSITION.X, PUCK_POSITION.Y);
+    this.puck.resetTrace();
   }
 
   render() {
     this.clear();
     Object.values(this.groups).forEach((group) => group.render(this.ctx));
+    document.querySelector('.js-tries').innerHTML = this.tries;
+    document.querySelector('.js-charges').innerHTML = this.chargesCounter;
   }
 
   handleCollisions() {
@@ -91,6 +98,7 @@ export default class Game {
     this.groups.obstacles.objects.forEach((obstacle) => {
       if (this.puck.touches(obstacle)) {
         this.eventBus.emit(EVENTS.OBSTACLE_COLLISION);
+        this.tries++;
       }
     });
   }
@@ -115,6 +123,12 @@ export default class Game {
   }
 
   createObstacles() {
+    this.groups.obstaclesForGoal.add(
+      new Obstacle(680, 269, 40, 1, true),
+      new Obstacle(720, 269, 1, 60, true),
+      new Obstacle(680, 330, 40, 1, true)
+    );
+
     this.obstacles.easy.add(new Obstacle(350, 300, 10, 70));
     this.obstacles.medium.add(
       new Obstacle(250, 0, 10, 400),
