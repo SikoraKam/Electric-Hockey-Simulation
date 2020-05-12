@@ -9,7 +9,7 @@ export default class HockeyGoal extends GameObject {
   update(delta) {}
 
   render(ctx) {
-    ctx.fillStyle = 'dark';
+    ctx.fillStyle = 'black';
     ctx.beginPath();
     ctx.moveTo(this.points[0][0], this.points[0][1]);
 
