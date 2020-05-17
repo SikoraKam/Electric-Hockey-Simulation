@@ -1,9 +1,8 @@
 import MainLoop from 'mainloop.js';
 import Group from './models/Group';
 import Puck from './models/physics/Puck';
-import { K_CONST } from './const/game.const';
 import { GAME_DIFFICULTY } from './const/game.const';
-import { PUCK_POSITION, PUCK_MASS, PUCK_RADIUS } from './const/puck.const';
+import { PUCK_POSITION } from './const/puck.const';
 import HockeyGoal from './models/HockeyGoal';
 import EVENTS from './const/events.const';
 import eventBus from './events/EventBus';

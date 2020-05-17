@@ -8,6 +8,7 @@ import {
 } from '../../const/puck.const';
 
 import Trace from '../Trace';
+import { FORCE_FACTOR, VERLET_STEP_FACTOR } from '../../const/physics.const';
 
 export default class Puck extends ElectricCharge {
   constructor(x, y) {
@@ -21,16 +22,16 @@ export default class Puck extends ElectricCharge {
   }
 
   update(dt) {
-    dt /= 2.5;
+    dt /= VERLET_STEP_FACTOR;
 
     const newX =
       2 * this.x -
       this.previousPos.x +
-      ((0.002 * this.acceleration.x) / this.mass) * dt * dt;
+      ((FORCE_FACTOR * this.acceleration.x) / this.mass) * dt * dt;
     const newY =
       2 * this.y -
       this.previousPos.y +
-      ((0.002 * this.acceleration.y) / this.mass) * dt * dt;
+      ((FORCE_FACTOR * this.acceleration.y) / this.mass) * dt * dt;
 
     this.previousPos = { x: this.x, y: this.y };
     this.trace.previousPosition.push(this.previousPos);
