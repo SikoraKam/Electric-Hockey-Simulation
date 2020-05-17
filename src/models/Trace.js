@@ -3,7 +3,7 @@ import { CHARGE_SIZE } from '../const/charge.const';
 
 export default class Trace {
   constructor() {
-    this.previousPosition = [{ x: null, y: null }];
+    this.previousPosition = [];
   }
 
   render(ctx) {

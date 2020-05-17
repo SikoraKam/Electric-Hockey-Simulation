@@ -1,9 +1,10 @@
 import EVENTS from '../const/events.const';
 import { CHARGE_SIZE, ELECTRIC_CHARGE_TYPE } from '../const/charge.const';
 import Controller from './Controller';
-import NegativeCharge from '../models/NegativeCharge';
-import PositiveCharge from '../models/PositiveCharge';
+import NegativeCharge from '../models/physics/NegativeCharge';
+import PositiveCharge from '../models/physics/PositiveCharge';
 import { GAME_DIFFICULTY } from '../const/game.const';
+import CoulombForce from '../models/physics/CoulombForce';
 
 export default class GameController extends Controller {
   constructor(game) {
@@ -103,6 +104,7 @@ export default class GameController extends Controller {
       type === ELECTRIC_CHARGE_TYPE.NEGATIVE
         ? new NegativeCharge(x, y)
         : new PositiveCharge(x, y);
+    this.game.forces.push(new CoulombForce(charge, this.game.puck));
     this.game.groups.charges.add(charge);
     this.game.chargesCounter++;
     document.querySelector('.js-charges').innerHTML = this.game.chargesCounter;

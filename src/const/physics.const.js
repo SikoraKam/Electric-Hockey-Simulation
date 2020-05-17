@@ -1,0 +1,2 @@
+export const COULOMB_FORCE_FACTOR = 1000000;
+export const CHARGE_MIN_DISTANCE = 25;

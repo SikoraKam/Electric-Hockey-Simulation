@@ -1,6 +1,6 @@
 import MainLoop from 'mainloop.js';
 import Group from './models/Group';
-import Puck from './models/Puck';
+import Puck from './models/physics/Puck';
 import { K_CONST } from './const/game.const';
 import { GAME_DIFFICULTY } from './const/game.const';
 import { PUCK_POSITION, PUCK_MASS, PUCK_RADIUS } from './const/puck.const';
@@ -13,6 +13,9 @@ export default class Game {
   constructor() {
     this.setup();
     this.bindLoopFunctions();
+
+    this.forces = [];
+    this.netForce = { x: 0, y: 0 };
 
     this.obstacles = {
       training: new Group(),
@@ -70,9 +73,9 @@ export default class Game {
   }
 
   update(delta) {
-    this.puck.acceleration = this.calculateFieldForce();
+    this.updateForces();
+    this.puck.acceleration = this.netForce;
     Object.values(this.groups).forEach((group) => group.update(delta));
-
     this.handleCollisions();
   }
 
@@ -102,23 +105,15 @@ export default class Game {
     });
   }
 
-  calculateFieldForce() {
-    const puck = this.puck;
-    const chargeMass = this.chargeMass;
-    const force = { x: 0, y: 0 };
+  updateForces() {
+    this.netForce = { x: 0, y: 0 };
 
-    this.groups.charges.objects.forEach((charge) => {
-      const r = charge.distance(puck);
+    this.forces.forEach((force) => {
+      force.calculate();
 
-      const sin = (charge.x - puck.x) / r;
-      const cos = (charge.y - puck.y) / r;
-      const repelling = charge.type === puck.type ? -1 : 1;
-
-      force.x += repelling * (sin / (Math.pow(r, 2) * chargeMass)) * K_CONST;
-      force.y += repelling * (cos / (Math.pow(r, 2) * chargeMass)) * K_CONST;
+      this.netForce.x += force.x;
+      this.netForce.y += force.y;
     });
-
-    return force;
   }
 
   createObstacles() {

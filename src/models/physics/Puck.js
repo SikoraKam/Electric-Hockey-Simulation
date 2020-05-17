@@ -1,38 +1,42 @@
 import ElectricCharge from './ElectricCharge';
-import { CHARGE_SIZE, ELECTRIC_CHARGE_TYPE } from '../const/charge.const';
+import { CHARGE_SIZE, ELECTRIC_CHARGE_TYPE } from '../../const/charge.const';
 import {
+  PUCK_MASS,
   PUCK_POSITION,
   PUCK_RADIUS,
   PUCK_VELOCITY_DIVIDER,
-} from '../const/puck.const';
+} from '../../const/puck.const';
 
-import Trace from './Trace';
-
+import Trace from '../Trace';
 
 export default class Puck extends ElectricCharge {
   constructor(x, y) {
     super(x, y, ELECTRIC_CHARGE_TYPE.NEGATIVE);
-    this.velocity = { x: 0, y: 0 };
     this.acceleration = { x: 0, y: 0 };
+    this.previousPos = { x, y };
+    this.mass = PUCK_MASS;
     this.radius = PUCK_RADIUS;
-    this.previousPosition = { x: [], y: [] };
     this.traceIsActive = false;
     this.trace = new Trace();
   }
 
-  update(delta) {
-    this.velocity.x += this.acceleration.x;
-    this.velocity.y += this.acceleration.y;
+  update(dt) {
+    dt /= 2.5;
 
-    this.trace.previousPosition.push({ x: this.x, y: this.y });
+    const newX =
+      2 * this.x -
+      this.previousPos.x +
+      ((0.002 * this.acceleration.x) / this.mass) * dt * dt;
+    const newY =
+      2 * this.y -
+      this.previousPos.y +
+      ((0.002 * this.acceleration.y) / this.mass) * dt * dt;
 
-    this.move(
-      this.x + (this.velocity.x / PUCK_VELOCITY_DIVIDER) * delta,
-      this.y + (this.velocity.y / PUCK_VELOCITY_DIVIDER) * delta
-    );
-
-    this.acceleration = { x: 0, y: 0 };
+    this.previousPos = { x: this.x, y: this.y };
+    this.trace.previousPosition.push(this.previousPos);
+    this.move(newX, newY);
   }
+
   render(ctx) {
     const centerX = this.x + CHARGE_SIZE / 2;
     const centerY = this.y + CHARGE_SIZE / 2;
