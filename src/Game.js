@@ -39,10 +39,7 @@ export default class Game {
     this.puck = new Puck(PUCK_POSITION.X, PUCK_POSITION.Y);
     this.groups.puck.add(this.puck);
 
-    this.chargeMass = PUCK_MASS;
-
     this.gameDifficulty = GAME_DIFFICULTY.TRAINING;
-
     this.createObstacles();
 
     this.tries = 0;
