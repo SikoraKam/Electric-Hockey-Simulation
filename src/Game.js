@@ -71,13 +71,14 @@ export default class Game {
   update(delta) {
     this.updateForces();
     this.puck.acceleration = this.netForce;
+
     Object.values(this.groups).forEach((group) => group.update(delta));
     this.handleCollisions();
   }
 
   reset() {
-    this.puck.velocity = { x: 0, y: 0 };
     this.puck.acceleration = { x: 0, y: 0 };
+    this.puck.previousPos = { x: PUCK_POSITION.X, y: PUCK_POSITION.Y };
     this.puck.move(PUCK_POSITION.X, PUCK_POSITION.Y);
     this.puck.trace.resetTrace();
   }
