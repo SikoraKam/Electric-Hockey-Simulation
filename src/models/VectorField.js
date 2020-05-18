@@ -4,9 +4,9 @@ import FieldVector from './FieldVector';
 import { median } from 'mathjs';
 
 export const VECTOR_FIELD_ROWS = 6;
-const VECTOR_FIELD_COLS = 12;
-const VECTOR_FIELD_PADDING_X = 80;
-const VECTOR_FIELD_PADDING_Y = 60;
+export const VECTOR_FIELD_COLS = 12;
+export const VECTOR_FIELD_PADDING_X = 80;
+export const VECTOR_FIELD_PADDING_Y = 60;
 
 export default class VectorField {
   constructor(game) {
