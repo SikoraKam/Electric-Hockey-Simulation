@@ -8,6 +8,7 @@ import EVENTS from './const/events.const';
 import eventBus from './events/EventBus';
 import Obstacle from './models/Obstacle';
 import VectorField from './models/VectorField';
+import { canvasArrowFunction } from './extensions/dom';
 
 export default class Game {
   constructor() {
@@ -51,6 +52,8 @@ export default class Game {
   }
 
   setup() {
+    this.extendEnvironment();
+
     this.loop = MainLoop;
     this.canvas = document.querySelector('.js-canvas');
     this.ctx = this.canvas.getContext('2d');
@@ -136,5 +139,9 @@ export default class Game {
       new Obstacle(500, 340, 10, 500),
       new Obstacle(500, 0, 10, 270)
     );
+  }
+
+  extendEnvironment() {
+    canvasArrowFunction();
   }
 }
