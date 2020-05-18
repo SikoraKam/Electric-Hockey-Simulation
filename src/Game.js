@@ -7,6 +7,7 @@ import HockeyGoal from './models/HockeyGoal';
 import EVENTS from './const/events.const';
 import eventBus from './events/EventBus';
 import Obstacle from './models/Obstacle';
+import VectorField from './models/VectorField';
 
 export default class Game {
   constructor() {
@@ -24,6 +25,7 @@ export default class Game {
     };
 
     this.groups = {
+      background: new Group(),
       puck: new Group(),
       charges: new Group(),
       goal: new Group(),
@@ -31,6 +33,10 @@ export default class Game {
       obstaclesForGoal: new Group(),
     };
     this.eventBus = eventBus;
+
+    this.vectorField = new VectorField(this);
+    console.log(this.vectorField.getFieldVectors())
+    this.groups.background.add(...this.vectorField.getFieldVectors());
 
     this.goal = new HockeyGoal(700, 270, 40, 60);
     this.groups.goal.add(this.goal);
@@ -112,6 +118,8 @@ export default class Game {
       this.netForce.y += force.y;
     });
   }
+
+
 
   createObstacles() {
     this.groups.obstaclesForGoal.add(
