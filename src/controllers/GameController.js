@@ -74,6 +74,7 @@ export default class GameController extends Controller {
   clear() {
     this.game.reset();
     this.game.groups.charges.removeAll();
+    this.game.groups.background.removeAll();
     this.game.forces = [];
     this.game.tries = 0;
     this.game.chargesCounter = 0;

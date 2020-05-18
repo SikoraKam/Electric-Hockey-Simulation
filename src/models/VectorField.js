@@ -12,7 +12,6 @@ export default class VectorField {
   constructor(game) {
     this.game = game;
     this.vectors = [];
-    this.extendCanvas();
   }
 
   calculateForceAt(x, y) {
