@@ -107,7 +107,7 @@ export default class GameController extends Controller {
         : new PositiveCharge(x, y);
     this.game.forces.push(new CoulombForce(charge, this.game.puck));
     this.game.groups.background.removeAll();
-    this.game.groups.background.add(...this.game.vectorField.getFieldVectors());
+    this.game.groups.background.add(...this.game.vectorField.makeVectors());
     this.game.groups.charges.add(charge);
     this.game.chargesCounter++;
     document.querySelector('.js-charges').innerHTML = this.game.chargesCounter;
