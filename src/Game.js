@@ -32,7 +32,7 @@ export default class Game {
     };
     this.eventBus = eventBus;
 
-    this.goal = new HockeyGoal(700, 270, 40, 60);
+    this.goal = new HockeyGoal(700, 270, 20, 60);
     this.groups.goal.add(this.goal);
 
     this.puck = new Puck(PUCK_POSITION.X, PUCK_POSITION.Y);
@@ -100,6 +100,13 @@ export default class Game {
         document.querySelector('.js-tries').innerHTML = this.tries;
       }
     });
+    this.groups.obstaclesForGoal.objects.forEach((obstacle) => {
+      if (this.puck.touches(obstacle)) {
+        this.eventBus.emit(EVENTS.OBSTACLE_COLLISION);
+        this.tries++;
+        document.querySelector('.js-tries').innerHTML = this.tries;
+      }
+    });
   }
 
   updateForces() {
@@ -115,9 +122,9 @@ export default class Game {
 
   createObstacles() {
     this.groups.obstaclesForGoal.add(
-      new Obstacle(680, 269, 40, 1, true),
-      new Obstacle(720, 269, 1, 60, true),
-      new Obstacle(680, 330, 40, 1, true)
+      new Obstacle(680, 267, 42, 1, true),
+      new Obstacle(722, 269, 1, 62, true),
+      new Obstacle(680, 332, 42, 1, true)
     );
 
     this.obstacles.easy.add(new Obstacle(350, 300, 10, 70));

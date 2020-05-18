@@ -21,7 +21,7 @@ export default class HockeyGoal extends GameObject {
   }
 
   calculatePoints() {
-    const halfWidth = this.width / 2;
+    const halfWidth = this.width;
     return [
       [this.x - halfWidth, this.y],
       [this.x + halfWidth, this.y],
