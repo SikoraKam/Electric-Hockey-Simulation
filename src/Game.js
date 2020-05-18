@@ -35,7 +35,6 @@ export default class Game {
     this.eventBus = eventBus;
 
     this.vectorField = new VectorField(this);
-    console.log(this.vectorField.getFieldVectors())
     this.groups.background.add(...this.vectorField.getFieldVectors());
 
     this.goal = new HockeyGoal(700, 270, 40, 60);
@@ -118,8 +117,6 @@ export default class Game {
       this.netForce.y += force.y;
     });
   }
-
-
 
   createObstacles() {
     this.groups.obstaclesForGoal.add(
