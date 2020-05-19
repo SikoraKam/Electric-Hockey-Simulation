@@ -60,13 +60,11 @@ export default class GameController extends Controller {
         : (this.game.puck.traceIsActive = false);
     });
     this.eventBus.on(EVENTS.GOAL, () => {
-      //TODO:display message about endgame
-      //consider also this.clear()
-      this.game.reset();
+      this.showGoalMessageAnimation();
+      this.clear();
     });
     this.eventBus.on(EVENTS.OBSTACLE_COLLISION, () => {
-      //TODO:display message about endgame
-      //consider also this.clear()
+      this.showFailureMessageAnimation();
       this.game.reset();
     });
   }
@@ -116,5 +114,32 @@ export default class GameController extends Controller {
       x: x - CHARGE_SIZE / 2,
       y: y - CHARGE_SIZE / 2,
     };
+  }
+
+  showGoalMessageAnimation() {
+    const me = document.querySelector('.goal-message');
+    me.style.display = 'block';
+    me.style.animation = 'none';
+    setTimeout(function () {
+      me.style.animation = '';
+    }, 3000);
+
+    me.style.animation = 'goal 3s ';
+    setTimeout(function () {
+      me.style.display = 'none';
+    }, 3000);
+  }
+  showFailureMessageAnimation() {
+    const me = document.querySelector('.failure-message');
+    me.style.display = 'block';
+    me.style.animation = 'none';
+    setTimeout(function () {
+      me.style.animation = '';
+    }, 1000);
+
+    me.style.animation = 'failure 1s ';
+    setTimeout(function () {
+      me.style.display = 'none';
+    }, 1000);
   }
 }
