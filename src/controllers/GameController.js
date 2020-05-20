@@ -59,6 +59,16 @@ export default class GameController extends Controller {
         ? (this.game.puck.traceIsActive = true)
         : (this.game.puck.traceIsActive = false);
     });
+    this.eventBus.on(EVENTS.FIELD_TOGGLE, (isActive) => {
+      if (isActive) {
+        this.game.vectorField.isActive = true;
+        this.game.groups.background.removeAll();
+        this.game.groups.background.add(...this.game.vectorField.makeVectors());
+      } else {
+        this.game.vectorField.isActive = false;
+        this.game.groups.background.removeAll();
+      }
+    });
     this.eventBus.on(EVENTS.GOAL, () => {
       this.showGoalMessageAnimation();
       this.clear();
@@ -105,8 +115,10 @@ export default class GameController extends Controller {
         ? new NegativeCharge(x, y)
         : new PositiveCharge(x, y);
     this.game.forces.push(new CoulombForce(charge, this.game.puck));
-    this.game.groups.background.removeAll();
-    this.game.groups.background.add(...this.game.vectorField.makeVectors());
+    if (this.game.vectorField.isActive) {
+      this.game.groups.background.removeAll();
+      this.game.groups.background.add(...this.game.vectorField.makeVectors());
+    }
     this.game.groups.charges.add(charge);
     this.game.chargesCounter++;
     document.querySelector('.js-charges').innerHTML = this.game.chargesCounter;
