@@ -7,6 +7,8 @@ import HockeyGoal from './models/HockeyGoal';
 import EVENTS from './const/events.const';
 import eventBus from './events/EventBus';
 import Obstacle from './models/Obstacle';
+import VectorField from './models/VectorField';
+import { canvasArrowFunction } from './extensions/dom';
 
 export default class Game {
   constructor() {
@@ -24,6 +26,7 @@ export default class Game {
     };
 
     this.groups = {
+      background: new Group(),
       puck: new Group(),
       charges: new Group(),
       goal: new Group(),
@@ -32,7 +35,10 @@ export default class Game {
     };
     this.eventBus = eventBus;
 
-    this.goal = new HockeyGoal(700, 270, 20, 60);
+    this.vectorField = new VectorField(this);
+    this.groups.background.add(...this.vectorField.makeVectors());
+
+    this.goal = new HockeyGoal(700, 270, 40, 60);
     this.groups.goal.add(this.goal);
 
     this.puck = new Puck(PUCK_POSITION.X, PUCK_POSITION.Y);
@@ -46,6 +52,8 @@ export default class Game {
   }
 
   setup() {
+    this.extendEnvironment();
+
     this.loop = MainLoop;
     this.canvas = document.querySelector('.js-canvas');
     this.ctx = this.canvas.getContext('2d');
@@ -138,5 +146,9 @@ export default class Game {
       new Obstacle(500, 340, 10, 500),
       new Obstacle(500, 0, 10, 270)
     );
+  }
+
+  extendEnvironment() {
+    canvasArrowFunction();
   }
 }
