@@ -10,6 +10,7 @@ export default class ElectricCharge extends GameObject {
     super(x, y, CHARGE_SIZE, CHARGE_SIZE);
     this.type = type;
     this.img = ELECTRIC_CHARGE_TYPE_TO_IMG[type];
+    this.mass = 1;
   }
 
   getSign() {

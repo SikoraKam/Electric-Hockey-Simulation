@@ -5,6 +5,6 @@ export const PUCK_POSITION = {
 
 export const PUCK_MASS = 25;
 
-export const PUCK_VELOCITY_DIVIDER = 30000;
+export const PUCK_VELOCITY_DIVIDER = 300;
 
 export const PUCK_RADIUS = 7;

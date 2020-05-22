@@ -14,7 +14,7 @@ export default class Puck extends ElectricCharge {
   constructor(x, y) {
     super(x, y, ELECTRIC_CHARGE_TYPE.NEGATIVE);
     this.acceleration = { x: 0, y: 0 };
-    this.previousPos = { x, y };
+    this.velocity = { x: 0, y: 0 };
     this.mass = PUCK_MASS;
     this.radius = PUCK_RADIUS;
     this.traceIsActive = false;
@@ -22,20 +22,17 @@ export default class Puck extends ElectricCharge {
   }
 
   update(dt) {
-    dt /= VERLET_STEP_FACTOR;
+    this.velocity.x += this.acceleration.x;
+    this.velocity.y += this.acceleration.y;
 
-    const newX =
-      2 * this.x -
-      this.previousPos.x +
-      ((FORCE_FACTOR * this.acceleration.x) / this.mass) * dt * dt;
-    const newY =
-      2 * this.y -
-      this.previousPos.y +
-      ((FORCE_FACTOR * this.acceleration.y) / this.mass) * dt * dt;
+    this.trace.previousPosition.push({ x: this.x, y: this.y });
 
-    this.previousPos = { x: this.x, y: this.y };
-    this.trace.previousPosition.push(this.previousPos);
-    this.move(newX, newY);
+    this.move(
+      this.x + (this.velocity.x / PUCK_VELOCITY_DIVIDER) * dt,
+      this.y + (this.velocity.y / PUCK_VELOCITY_DIVIDER) * dt
+    );
+
+    this.acceleration = { x: 0, y: 0 };
   }
 
   render(ctx) {
@@ -52,5 +49,11 @@ export default class Puck extends ElectricCharge {
     }
 
     ctx.stroke();
+  }
+
+  reset() {
+    this.velocity = { x: 0, y: 0 };
+    this.acceleration = { x: 0, y: 0 };
+    this.trace.resetTrace();
   }
 }
