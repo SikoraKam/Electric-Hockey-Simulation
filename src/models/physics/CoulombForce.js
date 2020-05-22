@@ -29,7 +29,7 @@ export default class CoulombForce {
         this.charge1.getSign() *
         this.charge2.getSign() *
         displacement) /
-      this.rCube
+      (this.rCube * this.charge2.mass)
     );
   }
 }

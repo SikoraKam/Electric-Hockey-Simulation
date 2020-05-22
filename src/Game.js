@@ -85,10 +85,9 @@ export default class Game {
   }
 
   reset() {
-    this.puck.acceleration = { x: 0, y: 0 };
-    this.puck.previousPos = { x: PUCK_POSITION.X, y: PUCK_POSITION.Y };
+    this.puck.reset();
     this.puck.move(PUCK_POSITION.X, PUCK_POSITION.Y);
-    this.puck.trace.resetTrace();
+    this.puck.previousPos = { x: PUCK_POSITION.X, y: PUCK_POSITION.Y };
   }
 
   render() {
