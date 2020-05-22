@@ -2,13 +2,10 @@ import ElectricCharge from './ElectricCharge';
 import { CHARGE_SIZE, ELECTRIC_CHARGE_TYPE } from '../../const/charge.const';
 import {
   PUCK_MASS,
-  PUCK_POSITION,
   PUCK_RADIUS,
   PUCK_VELOCITY_DIVIDER,
 } from '../../const/puck.const';
-
 import Trace from '../Trace';
-import { FORCE_FACTOR, VERLET_STEP_FACTOR } from '../../const/physics.const';
 
 export default class Puck extends ElectricCharge {
   constructor(x, y) {
