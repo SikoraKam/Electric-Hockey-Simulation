@@ -38,7 +38,7 @@ export default class Game {
     this.vectorField = new VectorField(this);
     this.groups.background.add(...this.vectorField.makeVectors());
 
-    this.goal = new HockeyGoal(700, 270, 40, 60);
+    this.goal = new HockeyGoal(700, 270, 20, 60);
     this.groups.goal.add(this.goal);
 
     this.puck = new Puck(PUCK_POSITION.X, PUCK_POSITION.Y);
