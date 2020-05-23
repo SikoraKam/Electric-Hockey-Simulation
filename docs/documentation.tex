@@ -110,9 +110,9 @@ $$
 % Text Node
 \draw (365,132.4) node [anchor=north west][inner sep=0.75pt]    {$x$};
 % Text Node
-\draw (361,181.4) node [anchor=north west][inner sep=0.75pt]    {$\vec{F}_{y}$};
+\draw (361,181.4) node [anchor=north west][inner sep=0.75pt]    {$\vec{F}_{x}$};
 % Text Node
-\draw (493,30.4) node [anchor=north west][inner sep=0.75pt]    {$\vec{F}_{x}$};
+\draw (493,30.4) node [anchor=north west][inner sep=0.75pt]    {$\vec{F}_{y}$};
 % Text Node
 \draw (411,65) node [anchor=north west][inner sep=0.75pt]   [align=left] {$\displaystyle \alpha $};
 % Text Node
@@ -144,6 +144,114 @@ $$
 $$
 a_{x}=k \cdot \frac{\sin \alpha}{m \cdot r^{2}} \quad a_{y}=k \cdot \frac{\cos \alpha}{m \cdot r^{2}}
 $$
+
+
+\section{Implementacja}
+\subsection{Struktura kodu}
+\begin{enumerate}
+    \item const - folder zawiera pliki przechowujące wszelkie stałe wykorzystywane w programie
+    \item assets - folder z plikami graficznymi oraz plikiem css
+    \item controllers - są tu zawarte klasy obsługujące interakcje klienta z programem oraz akcje wykonywane przez program
+    \item events - zawiera klasę która zapewnia obsługę zdarzeń w grze
+    \item extensions - folder z rozszerzeniami wykorzystywanymi w programie
+    \item models - zawarte są tu wszelkie klasy tworzące obiekty w grze oraz podfolder physics, który przechowuje obiekty fizyczne oraz model fizyczny
+    \test testy
+\end{enumerate}
+\subsection{Wybrane stałe}
+\begin{enumerate}
+    \item COULOMB\_FORCE\_FACTOR - odpowiada stałej k z obliczeń z sekcji 'Model Symulacyjny'
+    \item CHARGE\_MIN\_DISTANCE - minimalna odległość na jakiej utrzymywane są ładunki, aby nie dopuścić do współistnienia krążka i ładunku w tym samym miejscu i czasie zgodnie z zasadą Pauliego. W związku z tym zakładamy w naszym modelu dystans między ładunkami na minimum 25 jednostek odległości
+    \item PUCK\_VELOCITY\_DIVIDER - podzielnik prędkości aby wizualizacja symulacji była lepiej dostrzegalna
+\end{enumerate}
+
+\subsection{Wybrane modele i ich metody}
+\begin{enumerate}
+    \item BoundingBox - główna klasa zapewniająca ruch oraz kolizje obiektów na planszy.
+    Jej pola to \textit{x,y} składowe położenia oraz szerokość \textit{width} i wysokość \textit{height} obiektu.
+    
+    Zawiera trzy metody do obsługi kolizji: \textit{touches(), contains(), intersects()}.
+    
+    \textit{move()} przypisuje nowe położenie obiektu na podstawie przekazanych parametrów dotyczących przemieszczenia.
+    
+    \textit{distance()} oblicza dystans między obiektami w grze.
+    
+    \item GameObject - rozszerza \emph{BoundingBox}, bazowa abstrakcyjna klasa dla wielu modeli w grze. Deklaruje metody \textit{update(), render()}.
+    \item Group - klasa implementująca działania na tablicach obektów tworzonych jako grupy w grze
+    \item HockeyGoal - klasa implementująca rysowanie bramki na podstawie tworzonego \emph{BoundingBoxa}
+    \item Obstacle - klasa dzięki która tworzy i renderuje przeszkody w grze
+    \item Trace - klasa wykorzystywana przez klasę \textit{Puck} do rysowania trasy krążka
+    \item ElectricCharge - bazowa klasa dla klas \textit{NegativeCharge, PositiveCharge} tworząca odpowiedni ładunek na podstawie przekazanego typu \emph{type}.\\
+    Typ jest zawarty domyślnie w konstruktorach klas \textit{NegativeCharge, PositiveCharge}.
+    \item Puck - klasa dziedzicząca po \emph{ElectricCharge} tworząca krążek jako ładunek ujemny lub dodatni.\\
+    Krążek posiada własną masę \emph{mass} oraz promień \emph{radius}.
+    
+    \emph{acceleration, velocity} to odpowiednio przyspieszenie i prędkość krążka potrzebne do wyznaczania jego ruchu.
+    
+    \emph{trace} gdzie przypisany jest obiekt klasy \emph{Trace}  oraz \emph{traceIsActive} dotyczą możliwości rysowania przebytej przez krążek trasy.
+    
+   \textit{update(), render()} zapewniają odpowiednio ruch oraz rysowanie krążka.
+   
+   \item CoulumbForce - klasa implementująca obliczenia modelu fizycznego. Oblicza przyspieszenie krążka na podstawie siły między dwoma przekazanymi ładunkami. Jej obiekt jest tworzony podczas dodawania ładunku w \emph{GameController} i dodawany do \emph{forces} w klasie \emph{Game}
+  
+    \begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.8]{img/Funkcja_calculate.PNG}
+
+    \caption{Funkcja calculate obliczająca przyspieszenie krążka na podstawie siły między ładunkami}
+    \label{fig:Funkcja_calculate}
+\end{figure}
+
+\emph{calculate} - główna funkcja obliczająca przyspieszenie wypadkowe krążka, wykorzystywana w \emph{updateForces()} w \emph{Game}
+
+\emph{displacement} przechowuje przemieszczenie między krążkiem a ładunkiem dla danych składowych
+
+\emph{r} odległość między krążkiem a ładunkiem
+
+\emph{rCube} odległość podniesiona do sześcianu, upraszcza obliczenia w\\
+\emph{calculateComposite}
+
+\emph{x,y} składowe wyznaczanej siły
+
+    \begin{figure}[h]
+    \centering
+    \includegraphics[scale=1.2]{img/calculateComposite.PNG}
+
+    \caption{pomocnicza funkcja wyznaczająca przyspieszenie}
+    \label{fig:Funkcja_calculate_composite}
+\end{figure}
+
+\emph{calculateComposite()} funkcja oblicza przyspieszenie dla podanego przemieszczenia składowego. 
+\\Odpowiednik w modelu fizycznym $$
+a_{x}=k \cdot \frac{\sin \alpha}{m \cdot r^{2}} \quad a_{y}=k \cdot \frac{\cos \alpha}{m \cdot r^{2}}
+$$
+Odpowiednikiem sinusa lub cosinusa jest $\frac{\emph{displacement}}{r}$. Jako że w mianowniku występuje również $r^2$, wyrażenie $\frac{\emph{displacement}}{r \cdot r^2}$ zostało zastąpione przez $\frac{\emph{displacement}}{rCube}$
+
+Czynniki \emph{charge.getSign()} w liczniku odpowiadają za wyznaczenie odpowiedniego kierunku przyspieszenia
+    
+    
+\end{enumerate}
+
+\subsection{Kontrollery}
+\begin{enumerate}
+    \item Controller - bazowa klasa dla pozostałych kontrolerów zawierająca pole \emph{eventBus} przechowujące obiekt klasy \emph{Eventbus} do obsługi zdarzeń w grze.
+    
+    \item InputController - klasa obsługująca zdarzenia wymuszone przez klienta przez funkcjonalności takie jak: przycisk, checkbox, pole typu 'input' i kliknęcia myszą. Dla każdego typu interakcji użytkownika z programem jest zaimplementowana jedna z funkcji \textit{registerButtonListeners(), registerCheckboxListeners(), registerRadioListeners(), registerInputListeners(), registerMouseListeners()} wysyłąjąca odpowiedni komunikat dzięki \emph{eventBus.emit()}.
+    \item GameControler - klasa obsługująca wszelkie zdarzenia w grze.
+    
+    \emph{game} pole przechowujące aktualną sesję gry.
+    
+    \emph{registerListeners()} główna funkcja implementująca reakcję na konkretne zdarzenie wysłane przez grę lub użytkownika poprzez \emph{InputController}. Przez \emph{eventBus.on()} sprawdza czy aktywne jest dane zdarzenie
+    
+    \emph{clear()} wyczyszczenie planszy i stanu gry
+    
+    \emph{onDifficultyChange()} - funkcja reagująca na zmianę poziomu trudności
+    
+    \emph{placeCharge()} - funkcja obsługująca umiejscowienie ładunków na planszy
+    
+    \emph{showGoalMessageAnimation(), showFailureMessageAnimation()} - funkcje wyświetlające animacje tekstu w zależności od zdarzenia
+    \end{enumerate}
+
+
 
 \section{Literatura}
 \begin{enumerate}
