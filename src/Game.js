@@ -9,6 +9,13 @@ import eventBus from './events/EventBus';
 import Obstacle from './models/Obstacle';
 import VectorField from './models/VectorField';
 import { canvasArrowFunction } from './extensions/dom';
+import {
+  HOCKEY_GOAL_OBSTACLES_POSITION,
+  HOCKEY_GOAL_POSITION,
+  OBSTACLES_EASY_POSITION,
+  OBSTACLES_HARD_POSITION,
+  OBSTACLES_MEDIUM_POSITION,
+} from './const/positions.const';
 
 export default class Game {
   constructor() {
@@ -38,7 +45,12 @@ export default class Game {
     this.vectorField = new VectorField(this);
     this.groups.background.add(...this.vectorField.makeVectors());
 
-    this.goal = new HockeyGoal(700, 270, 20, 60);
+    this.goal = new HockeyGoal(
+      HOCKEY_GOAL_POSITION.X,
+      HOCKEY_GOAL_POSITION.Y,
+      20,
+      60
+    );
     this.groups.goal.add(this.goal);
 
     this.puck = new Puck(PUCK_POSITION.X, PUCK_POSITION.Y);
@@ -96,19 +108,27 @@ export default class Game {
   }
 
   handleCollisions() {
-    if (this.goal.touches(this.puck)) {
+    if (this.goal.intersects(this.puck)) {
       this.eventBus.emit(EVENTS.GOAL);
     }
 
     this.groups.obstacles.objects.forEach((obstacle) => {
-      if (this.puck.touches(obstacle)) {
+      if (
+        this.puck.intersects(obstacle) ||
+        this.puck.contains(obstacle) ||
+        this.puck.touches(obstacle)
+      ) {
         this.eventBus.emit(EVENTS.OBSTACLE_COLLISION);
         this.tries++;
         document.querySelector('.js-tries').innerHTML = this.tries;
       }
     });
     this.groups.obstaclesForGoal.objects.forEach((obstacle) => {
-      if (this.puck.touches(obstacle)) {
+      if (
+        this.puck.intersects(obstacle) ||
+        this.puck.contains(obstacle) ||
+        this.puck.touches(obstacle)
+      ) {
         this.eventBus.emit(EVENTS.OBSTACLE_COLLISION);
         this.tries++;
         document.querySelector('.js-tries').innerHTML = this.tries;
@@ -129,21 +149,76 @@ export default class Game {
 
   createObstacles() {
     this.groups.obstaclesForGoal.add(
-      new Obstacle(680, 267, 42, 1, true),
-      new Obstacle(722, 269, 1, 62, true),
-      new Obstacle(680, 332, 42, 1, true)
+      new Obstacle(
+        HOCKEY_GOAL_OBSTACLES_POSITION.OBSTACLE1.X,
+        HOCKEY_GOAL_OBSTACLES_POSITION.OBSTACLE1.Y,
+        44,
+        6,
+        true
+      ),
+      new Obstacle(
+        HOCKEY_GOAL_OBSTACLES_POSITION.OBSTACLE2.X,
+        HOCKEY_GOAL_OBSTACLES_POSITION.OBSTACLE2.Y,
+        6,
+        66,
+        true
+      ),
+      new Obstacle(
+        HOCKEY_GOAL_OBSTACLES_POSITION.OBSTACLE3.X,
+        HOCKEY_GOAL_OBSTACLES_POSITION.OBSTACLE3.Y,
+        44,
+        6,
+        true
+      )
     );
 
-    this.obstacles.easy.add(new Obstacle(350, 300, 10, 70));
+    this.obstacles.easy.add(
+      new Obstacle(
+        OBSTACLES_EASY_POSITION.X,
+        OBSTACLES_EASY_POSITION.Y,
+        15,
+        110
+      )
+    );
     this.obstacles.medium.add(
-      new Obstacle(250, 0, 10, 400),
-      new Obstacle(450, 300, 10, 300)
+      new Obstacle(
+        OBSTACLES_MEDIUM_POSITION.OBSTACLE1.X,
+        OBSTACLES_MEDIUM_POSITION.OBSTACLE1.Y,
+        15,
+        400
+      ),
+      new Obstacle(
+        OBSTACLES_MEDIUM_POSITION.OBSTACLE2.X,
+        OBSTACLES_MEDIUM_POSITION.OBSTACLE2.Y,
+        15,
+        300
+      )
     );
     this.obstacles.hard.add(
-      new Obstacle(200, 170, 10, 200),
-      new Obstacle(0, 370, 210, 10),
-      new Obstacle(500, 340, 10, 500),
-      new Obstacle(500, 0, 10, 270)
+      new Obstacle(
+        OBSTACLES_HARD_POSITION.OBSTACLE1.X,
+        OBSTACLES_HARD_POSITION.OBSTACLE1.Y,
+        15,
+        200
+      ),
+      new Obstacle(
+        OBSTACLES_HARD_POSITION.OBSTACLE2.X,
+        OBSTACLES_HARD_POSITION.OBSTACLE2.Y,
+        210,
+        15
+      ),
+      new Obstacle(
+        OBSTACLES_HARD_POSITION.OBSTACLE3.X,
+        OBSTACLES_HARD_POSITION.OBSTACLE3.Y,
+        15,
+        260
+      ),
+      new Obstacle(
+        OBSTACLES_HARD_POSITION.OBSTACLE4.X,
+        OBSTACLES_HARD_POSITION.OBSTACLE4.Y,
+        15,
+        this.canvas.clientHeight
+      )
     );
   }
 
