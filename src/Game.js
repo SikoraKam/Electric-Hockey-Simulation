@@ -16,6 +16,7 @@ import {
   OBSTACLES_HARD_POSITION,
   OBSTACLES_MEDIUM_POSITION,
 } from './const/positions.const';
+const canvas = document.querySelector('.js-canvas');
 
 export default class Game {
   constructor() {
@@ -152,22 +153,22 @@ export default class Game {
       new Obstacle(
         HOCKEY_GOAL_OBSTACLES_POSITION.OBSTACLE1.X,
         HOCKEY_GOAL_OBSTACLES_POSITION.OBSTACLE1.Y,
-        44,
-        6,
+        canvas.clientWidth * 0.029,
+        canvas.clientHeight * 0.01005,
         true
       ),
       new Obstacle(
         HOCKEY_GOAL_OBSTACLES_POSITION.OBSTACLE2.X,
         HOCKEY_GOAL_OBSTACLES_POSITION.OBSTACLE2.Y,
-        6,
-        66,
+        canvas.clientWidth * 0.0039,
+        canvas.clientHeight * 0.1105,
         true
       ),
       new Obstacle(
         HOCKEY_GOAL_OBSTACLES_POSITION.OBSTACLE3.X,
         HOCKEY_GOAL_OBSTACLES_POSITION.OBSTACLE3.Y,
-        44,
-        6,
+        canvas.clientWidth * 0.0286,
+        canvas.clientHeight * 0.01005,
         true
       )
     );
@@ -176,47 +177,47 @@ export default class Game {
       new Obstacle(
         OBSTACLES_EASY_POSITION.X,
         OBSTACLES_EASY_POSITION.Y,
-        15,
-        110
+        canvas.clientWidth * 0.0097,
+        canvas.clientHeight * 0.1842
       )
     );
     this.obstacles.medium.add(
       new Obstacle(
         OBSTACLES_MEDIUM_POSITION.OBSTACLE1.X,
         OBSTACLES_MEDIUM_POSITION.OBSTACLE1.Y,
-        15,
-        400
+        canvas.clientWidth * 0.0097,
+        canvas.clientHeight * 0.704
       ),
       new Obstacle(
         OBSTACLES_MEDIUM_POSITION.OBSTACLE2.X,
         OBSTACLES_MEDIUM_POSITION.OBSTACLE2.Y,
-        15,
-        300
+        canvas.clientWidth * 0.0097,
+        canvas.clientHeight * 0.502
       )
     );
     this.obstacles.hard.add(
       new Obstacle(
         OBSTACLES_HARD_POSITION.OBSTACLE1.X,
         OBSTACLES_HARD_POSITION.OBSTACLE1.Y,
-        15,
-        200
+        canvas.clientWidth * 0.0097,
+        canvas.clientHeight * 0.335
       ),
       new Obstacle(
         OBSTACLES_HARD_POSITION.OBSTACLE2.X,
         OBSTACLES_HARD_POSITION.OBSTACLE2.Y,
-        210,
-        15
+        canvas.clientWidth * 0.1367,
+        canvas.clientHeight * 0.025
       ),
       new Obstacle(
         OBSTACLES_HARD_POSITION.OBSTACLE3.X,
         OBSTACLES_HARD_POSITION.OBSTACLE3.Y,
-        15,
-        260
+        canvas.clientWidth * 0.0097,
+        canvas.clientHeight * 0.435
       ),
       new Obstacle(
         OBSTACLES_HARD_POSITION.OBSTACLE4.X,
         OBSTACLES_HARD_POSITION.OBSTACLE4.Y,
-        15,
+        canvas.clientWidth * 0.0097,
         this.canvas.clientHeight
       )
     );
