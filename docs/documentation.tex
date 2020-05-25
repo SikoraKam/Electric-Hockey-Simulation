@@ -18,6 +18,7 @@
 \usepackage{booktabs}
 \usepackage{multicol}
 \usepackage{comment}
+\usepackage{float}
 \usetikzlibrary{fadings}
 \usetikzlibrary{patterns}
 \usetikzlibrary{shadows.blur}
@@ -155,15 +156,15 @@ $$
     \item events - zawiera klasę która zapewnia obsługę zdarzeń w grze
     \item extensions - folder z rozszerzeniami wykorzystywanymi w programie
     \item models - zawarte są tu wszelkie klasy tworzące obiekty w grze oraz podfolder physics, który przechowuje obiekty fizyczne oraz model fizyczny
-    \test testy
 \end{enumerate}
 \subsection{Wybrane stałe}
 \begin{enumerate}
     \item COULOMB\_FORCE\_FACTOR - odpowiada stałej k z obliczeń z sekcji 'Model Symulacyjny'
     \item CHARGE\_MIN\_DISTANCE - minimalna odległość na jakiej utrzymywane są ładunki, aby nie dopuścić do współistnienia krążka i ładunku w tym samym miejscu i czasie zgodnie z zasadą Pauliego. W związku z tym zakładamy w naszym modelu dystans między ładunkami na minimum 25 jednostek odległości
-    \item PUCK\_VELOCITY\_DIVIDER - podzielnik prędkości aby wizualizacja symulacji była lepiej dostrzegalna
+    \item PUCK\_VELOCITY\_DIVIDER - dzielnik prędkości aby wizualizacja symulacji była lepiej dostrzegalna
 \end{enumerate}
 
+\clearpage
 \subsection{Wybrane modele i ich metody}
 \begin{enumerate}
     \item BoundingBox - główna klasa zapewniająca ruch oraz kolizje obiektów na planszy.
@@ -191,15 +192,26 @@ $$
     
    \textit{update(), render()} zapewniają odpowiednio ruch oraz rysowanie krążka.
    
-   \item CoulumbForce - klasa implementująca obliczenia modelu fizycznego. Oblicza przyspieszenie krążka na podstawie siły między dwoma przekazanymi ładunkami. Jej obiekt jest tworzony podczas dodawania ładunku w \emph{GameController} i dodawany do \emph{forces} w klasie \emph{Game}
+   \clearpage
+    \item VectorField - klasa tworząca obiekty składające się na pole wektorowe. Posiada ona ustalony zbiór punktów, i dla każdego z nich oblicza siłę która działałaby na krążek w danym miejscu. Następnie dla koordynatów tworzony jest obiekt \emph{FieldVector}, który rysowany jest na bazie przekazanej mu siły. Klasa pola wektorowego oblicza również medianę wszystkich sił, by w prosty sposób można było na jej podstawie odpowiednio przeskalować i pokolorować wektory, w celu lepszej wizualizacji pola.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.5]{img/vector_drawing.png}
+        \caption{Funkcja rysująca wektor, kształt strzałki wyznaczany jest na bazie jej bazowej długości i kąta wektora siły. Implementacja wyznaczania siły używa metody calculate opisanej poniżej. Podmieniana jest jedynie pozycja krążka by zasymulować oddziaływanie w punkcie. }
+        \label{fig:vector_drawing}
+    \end{figure}
+    
+   \clearpage
+   \item CoulombForce - klasa implementująca obliczenia modelu fizycznego. Oblicza przyspieszenie krążka na podstawie siły między dwoma przekazanymi ładunkami. Jej obiekt jest tworzony podczas dodawania ładunku w \emph{GameController} i dodawany do \emph{forces} w klasie \emph{Game}
+ 
   
-    \begin{figure}[h]
+    \begin{figure}[H]
     \centering
     \includegraphics[scale=0.8]{img/Funkcja_calculate.PNG}
 
     \caption{Funkcja calculate obliczająca przyspieszenie krążka na podstawie siły między ładunkami}
     \label{fig:Funkcja_calculate}
-\end{figure}
+    \end{figure}
 
 \emph{calculate} - główna funkcja obliczająca przyspieszenie wypadkowe krążka, wykorzystywana w \emph{updateForces()} w \emph{Game}
 
@@ -212,13 +224,6 @@ $$
 
 \emph{x,y} składowe wyznaczanej siły
 
-    \begin{figure}[h]
-    \centering
-    \includegraphics[scale=1.2]{img/calculateComposite.PNG}
-
-    \caption{pomocnicza funkcja wyznaczająca przyspieszenie}
-    \label{fig:Funkcja_calculate_composite}
-\end{figure}
 
 \emph{calculateComposite()} funkcja oblicza przyspieszenie dla podanego przemieszczenia składowego. 
 \\Odpowiednik w modelu fizycznym $$
