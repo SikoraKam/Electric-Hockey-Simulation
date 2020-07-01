@@ -95,15 +95,23 @@ export default class GameController extends Controller {
     switch (this.game.gameDifficulty) {
       case GAME_DIFFICULTY.TRAINING:
         this.game.groups.obstacles = this.game.obstacles.training;
+        this.game.chargesGenerator.isActive = false;
         break;
       case GAME_DIFFICULTY.EASY:
         this.game.groups.obstacles = this.game.obstacles.easy;
+        this.game.chargesGenerator.isActive = false;
         break;
       case GAME_DIFFICULTY.MEDIUM:
         this.game.groups.obstacles = this.game.obstacles.medium;
+        this.game.chargesGenerator.isActive = false;
         break;
       case GAME_DIFFICULTY.HARD:
         this.game.groups.obstacles = this.game.obstacles.hard;
+        this.game.chargesGenerator.isActive = false;
+        break;
+      case GAME_DIFFICULTY.CUSTOM:
+        this.game.groups.obstacles = this.game.obstacles.custom;
+        this.game.chargesGenerator.isActive = true;
         break;
     }
   }

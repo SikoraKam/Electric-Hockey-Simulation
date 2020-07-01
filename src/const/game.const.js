@@ -3,6 +3,7 @@ export const GAME_DIFFICULTY = {
   EASY: 'EASY',
   MEDIUM: 'MEDIUM',
   HARD: 'HARD',
+  CUSTOM: 'CUSTOM',
 
   from(text) {
     return this[text.toUpperCase()] || null;

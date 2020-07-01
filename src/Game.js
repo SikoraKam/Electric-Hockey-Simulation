@@ -16,6 +16,7 @@ import {
   OBSTACLES_HARD_POSITION,
   OBSTACLES_MEDIUM_POSITION,
 } from './const/positions.const';
+import ChargesGenerator from './models/ChargesGenerator';
 const canvas = document.querySelector('.js-canvas');
 
 export default class Game {
@@ -31,6 +32,7 @@ export default class Game {
       easy: new Group(),
       medium: new Group(),
       hard: new Group(),
+      custom: new Group(),
     };
 
     this.groups = {
@@ -40,6 +42,7 @@ export default class Game {
       goal: new Group(),
       obstacles: this.obstacles.training,
       obstaclesForGoal: new Group(),
+      chargesGenerator: new Group(),
     };
     this.eventBus = eventBus;
 
@@ -56,6 +59,14 @@ export default class Game {
 
     this.puck = new Puck(PUCK_POSITION.X, PUCK_POSITION.Y);
     this.groups.puck.add(this.puck);
+
+    this.chargesGenerator = new ChargesGenerator(
+      (canvas.clientWidth / 12) * 4,
+      canvas.clientHeight / 2 - 5,
+      15,
+      15
+    );
+    this.groups.chargesGenerator.add(this.chargesGenerator);
 
     this.gameDifficulty = GAME_DIFFICULTY.TRAINING;
     this.createObstacles();
@@ -219,6 +230,14 @@ export default class Game {
         OBSTACLES_HARD_POSITION.OBSTACLE4.Y,
         canvas.clientWidth * 0.0097,
         this.canvas.clientHeight
+      )
+    );
+    this.obstacles.custom.add(
+      new Obstacle(
+        this.chargesGenerator.x,
+        this.chargesGenerator.y,
+        this.chargesGenerator.width,
+        this.chargesGenerator.height
       )
     );
   }
