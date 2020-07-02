@@ -106,6 +106,9 @@ export default class Game {
 
     Object.values(this.groups).forEach((group) => group.update(delta));
     this.handleCollisions();
+    if (this.gameDifficulty === GAME_DIFFICULTY.CUSTOM) {
+      this.groups.charges.objects.forEach((charge) => charge.moveCharge());
+    }
   }
 
   reset() {

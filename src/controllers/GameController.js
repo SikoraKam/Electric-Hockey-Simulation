@@ -96,27 +96,27 @@ export default class GameController extends Controller {
       case GAME_DIFFICULTY.TRAINING:
         this.game.groups.obstacles = this.game.obstacles.training;
         this.game.chargesGenerator.isActive = false;
-        this.game.chargesGenerator.abortTimer();
+        this.abortTimer();
         break;
       case GAME_DIFFICULTY.EASY:
         this.game.groups.obstacles = this.game.obstacles.easy;
         this.game.chargesGenerator.isActive = false;
-        this.game.chargesGenerator.abortTimer();
+        this.abortTimer();
         break;
       case GAME_DIFFICULTY.MEDIUM:
         this.game.groups.obstacles = this.game.obstacles.medium;
         this.game.chargesGenerator.isActive = false;
-        this.game.chargesGenerator.abortTimer();
+        this.abortTimer();
         break;
       case GAME_DIFFICULTY.HARD:
         this.game.groups.obstacles = this.game.obstacles.hard;
         this.game.chargesGenerator.isActive = false;
-        this.game.chargesGenerator.abortTimer();
+        this.abortTimer();
         break;
       case GAME_DIFFICULTY.CUSTOM:
         this.game.groups.obstacles = this.game.obstacles.custom;
         this.game.chargesGenerator.isActive = true;
-        this.game.chargesGenerator.startTimer();
+        this.startTimer();
         break;
     }
   }
@@ -142,6 +142,22 @@ export default class GameController extends Controller {
       x: x - CHARGE_SIZE / 2,
       y: y - CHARGE_SIZE / 2,
     };
+  }
+  generateRandomCharge() {
+    const centerX =
+      this.game.chargesGenerator.x + this.game.chargesGenerator.width / 2;
+    const centerY =
+      this.game.chargesGenerator.y + this.game.chargesGenerator.height / 2;
+    const type = Math.floor(Math.random() * 2);
+
+    const charge =
+      type === 1
+        ? new PositiveCharge(centerX, centerY)
+        : new NegativeCharge(centerX, centerY);
+
+    this.game.forces.push(new CoulombForce(charge, this.game.puck));
+    this.game.groups.charges.add(charge);
+    return charge;
   }
 
   showGoalMessageAnimation() {
@@ -169,5 +185,13 @@ export default class GameController extends Controller {
     setTimeout(function () {
       me.style.display = 'none';
     }, 1000);
+  }
+
+  startTimer() {
+    this.tid = setInterval(this.generateRandomCharge(), 5000);
+  }
+
+  abortTimer() {
+    clearInterval(this.tid);
   }
 }
