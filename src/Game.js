@@ -234,8 +234,8 @@ export default class Game {
     );
     this.obstacles.custom.add(
       new Obstacle(
-        this.chargesGenerator.x,
-        this.chargesGenerator.y,
+        this.chargesGenerator.x + 3,
+        this.chargesGenerator.y + 3,
         this.chargesGenerator.width,
         this.chargesGenerator.height
       )
