@@ -73,6 +73,8 @@ export default class Game {
 
     this.tries = 0;
     this.chargesCounter = 0;
+
+    this.listOfMovingCharges = [];
   }
 
   setup() {
@@ -107,7 +109,11 @@ export default class Game {
     Object.values(this.groups).forEach((group) => group.update(delta));
     this.handleCollisions();
     if (this.gameDifficulty === GAME_DIFFICULTY.CUSTOM) {
-      this.groups.charges.objects.forEach((charge) => charge.moveCharge());
+      this.groups.charges.objects.forEach((charge) => {
+        if (this.listOfMovingCharges.includes(charge)) {
+          charge.moveCharge();
+        }
+      });
     }
   }
 

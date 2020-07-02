@@ -157,6 +157,7 @@ export default class GameController extends Controller {
 
     this.game.forces.push(new CoulombForce(charge, this.game.puck));
     this.game.groups.charges.add(charge);
+    this.game.listOfMovingCharges.push(charge);
     return charge;
   }
 
