@@ -21,14 +21,4 @@ export default class ChargesGenerator extends GameObject {
       ctx.stroke();
     }
   }
-
-  // moveCharge(charge) {
-  //   const randomDirection = 2 * Math.PI * Math.random();
-  //   const randomSpeed = Math.floor(Math.random() * 100);
-  //
-  //   charge.move(
-  //     charge.x + randomSpeed * Math.sin(randomDirection),
-  //     charge.y + randomSpeed * -Math.cos(randomDirection)
-  //   );
-  // }
 }

@@ -11,6 +11,7 @@ export default class GameController extends Controller {
     super();
     this.game = game;
     this.registerListeners();
+    this.CustomLevelWasActive = false;
   }
 
   start() {
@@ -96,27 +97,32 @@ export default class GameController extends Controller {
       case GAME_DIFFICULTY.TRAINING:
         this.game.groups.obstacles = this.game.obstacles.training;
         this.game.chargesGenerator.isActive = false;
-        this.abortTimer();
+        if (this.CustomLevelWasActive) this.abortTimerClearCharges();
+        this.CustomLevelWasActive = false;
         break;
       case GAME_DIFFICULTY.EASY:
         this.game.groups.obstacles = this.game.obstacles.easy;
         this.game.chargesGenerator.isActive = false;
-        this.abortTimer();
+        if (this.CustomLevelWasActive) this.abortTimerClearCharges();
+        this.CustomLevelWasActive = false;
         break;
       case GAME_DIFFICULTY.MEDIUM:
         this.game.groups.obstacles = this.game.obstacles.medium;
         this.game.chargesGenerator.isActive = false;
-        this.abortTimer();
+        if (this.CustomLevelWasActive) this.abortTimerClearCharges();
+        this.CustomLevelWasActive = false;
         break;
       case GAME_DIFFICULTY.HARD:
         this.game.groups.obstacles = this.game.obstacles.hard;
         this.game.chargesGenerator.isActive = false;
-        this.abortTimer();
+        if (this.CustomLevelWasActive) this.abortTimerClearCharges();
+        this.CustomLevelWasActive = false;
         break;
       case GAME_DIFFICULTY.CUSTOM:
         this.game.groups.obstacles = this.game.obstacles.custom;
         this.game.chargesGenerator.isActive = true;
         this.startTimer();
+        this.CustomLevelWasActive = true;
         break;
     }
   }
@@ -189,10 +195,12 @@ export default class GameController extends Controller {
   }
 
   startTimer() {
-    this.tid = setInterval(this.generateRandomCharge(), 5000);
+    this.tid = setInterval(this.generateRandomCharge.bind(this), 2000);
   }
 
-  abortTimer() {
+  abortTimerClearCharges() {
+    this.game.listOfMovingCharges = [];
+    this.clear();
     clearInterval(this.tid);
   }
 }

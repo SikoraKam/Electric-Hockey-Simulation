@@ -113,6 +113,10 @@ export default class Game {
         if (this.listOfMovingCharges.includes(charge)) {
           charge.moveCharge();
         }
+        if (this.vectorField.isActive) {
+          this.groups.background.removeAll();
+          this.groups.background.add(...this.vectorField.makeVectors());
+        }
       });
     }
   }
