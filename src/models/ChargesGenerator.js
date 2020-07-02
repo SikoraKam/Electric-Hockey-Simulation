@@ -28,9 +28,20 @@ export default class HockeyGoal extends GameObject {
     const centerY = this.y + this.height / 2;
     new PositiveCharge(centerX, centerY);
 
-    //const randomDirection = Math.floor(Math.random() * 365);
+    const randomDirection = 2 * Math.PI * Math.random();
     const randomSpeed = Math.floor(Math.random() * 11);
 
-    this.move(this.x + randomSpeed, this.y + randomSpeed);
+    this.move(
+      this.x + randomSpeed * Math.sin(randomDirection),
+      this.y + randomSpeed * -Math.cos(randomDirection)
+    );
+  }
+
+  startTimer() {
+    this.tid = setInterval(this.generateCharge(), 5000);
+  }
+
+  abortTimer() {
+    clearInterval(this.tid);
   }
 }
