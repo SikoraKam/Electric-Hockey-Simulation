@@ -10,8 +10,8 @@ export default class PositiveCharge extends ElectricCharge {
 
   moveCharge() {
     this.move(
-      this.x + randomSpeed * Math.sin(randomDirection),
-      this.y + randomSpeed * -Math.cos(randomDirection)
+      this.x + this.randomSpeed * Math.sin(this.randomDirection),
+      this.y + this.randomSpeed * -Math.cos(this.randomDirection)
     );
   }
 }
