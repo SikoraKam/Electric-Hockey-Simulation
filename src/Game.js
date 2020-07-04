@@ -16,6 +16,7 @@ import {
   OBSTACLES_HARD_POSITION,
   OBSTACLES_MEDIUM_POSITION,
 } from './const/positions.const';
+import ChargesGenerator from './models/ChargesGenerator';
 const canvas = document.querySelector('.js-canvas');
 
 export default class Game {
@@ -31,6 +32,7 @@ export default class Game {
       easy: new Group(),
       medium: new Group(),
       hard: new Group(),
+      custom: new Group(),
     };
 
     this.groups = {
@@ -40,6 +42,7 @@ export default class Game {
       goal: new Group(),
       obstacles: this.obstacles.training,
       obstaclesForGoal: new Group(),
+      chargesGenerator: new Group(),
     };
     this.eventBus = eventBus;
 
@@ -57,11 +60,21 @@ export default class Game {
     this.puck = new Puck(PUCK_POSITION.X, PUCK_POSITION.Y);
     this.groups.puck.add(this.puck);
 
+    this.chargesGenerator = new ChargesGenerator(
+      (canvas.clientWidth / 12) * 4,
+      canvas.clientHeight / 2 - 5,
+      15,
+      15
+    );
+    this.groups.chargesGenerator.add(this.chargesGenerator);
+
     this.gameDifficulty = GAME_DIFFICULTY.TRAINING;
     this.createObstacles();
 
     this.tries = 0;
     this.chargesCounter = 0;
+
+    this.listOfMovingCharges = [];
   }
 
   setup() {
@@ -95,6 +108,42 @@ export default class Game {
 
     Object.values(this.groups).forEach((group) => group.update(delta));
     this.handleCollisions();
+    if (this.gameDifficulty === GAME_DIFFICULTY.CUSTOM) {
+      this.handleMovingCharges();
+    }
+  }
+
+  isChargeOnScreen(charge, offset = 20) {
+    return (
+      charge.x > 0 - offset &&
+      charge.x < canvas.clientWidth + offset &&
+      charge.y > 0 - offset &&
+      charge.y < canvas.clientHeight + offset
+    );
+  }
+
+  handleMovingCharges() {
+    this.listOfMovingCharges.forEach((charge) => {
+      charge.moveCharge();
+    });
+
+    this.listOfMovingCharges = this.listOfMovingCharges.reduce(
+      (charges, charge) => {
+        if (this.isChargeOnScreen(charge)) {
+          charge.moveCharge();
+          charges.push(charge);
+        } else {
+          charge.active = false;
+        }
+        return charges;
+      },
+      []
+    );
+
+    if (this.vectorField.isActive) {
+      this.groups.background.removeAll();
+      this.groups.background.add(...this.vectorField.makeVectors());
+    }
   }
 
   reset() {
@@ -140,11 +189,17 @@ export default class Game {
   updateForces() {
     this.netForce = { x: 0, y: 0 };
 
-    this.forces.forEach((force) => {
+    this.forces = this.forces.filter((force) => {
+      if (!force.charge1.active || !force.charge2.active) {
+        return false;
+      }
+
       force.calculate();
 
       this.netForce.x += force.x;
       this.netForce.y += force.y;
+
+      return true;
     });
   }
 
@@ -219,6 +274,14 @@ export default class Game {
         OBSTACLES_HARD_POSITION.OBSTACLE4.Y,
         canvas.clientWidth * 0.0097,
         this.canvas.clientHeight
+      )
+    );
+    this.obstacles.custom.add(
+      new Obstacle(
+        this.chargesGenerator.x + 3,
+        this.chargesGenerator.y + 3,
+        this.chargesGenerator.width,
+        this.chargesGenerator.height
       )
     );
   }
