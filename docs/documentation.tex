@@ -50,7 +50,7 @@ Projekt zdecydowaliśmy się wykonać w JavaScript
 
 Aplikacja pozwala na śledzenie dokładnego zachowania ładunku w polu elektrycznym, jednocześnie udostępniając ciekawą rozgrywkę zachęcającą gracza do dokładniejszego prześledzenia interakcji wzajemnie oddziałujących między sobą ładunków. Lewy przycisk myszki dodaje ładunek ujemny we wskazane miejsce na planszy, a prawy dodatni.
 
-Aby ułatwić wizualizację całego zachowania, możemy włączyć pole wektorowe które pozwoli nam zaobserwować siły działające na krążek w danym punkcie. Gracz może również po zaznaczeniu opcji "Trace" rysować ślad poruszającego się krążka, a także z użyciem opcji "Puck is positive" zmienić jego domyślny ładunek z dodatniego na ujemny.
+Aby ułatwić wizualizację całego zachowania, możemy włączyć pole wektorowe które pozwoli nam zaobserwować siły działające na krążek w danym punkcie. Gracz może również po zaznaczeniu opcji 'Trace' rysować ślad poruszającego się krążka, a także z użyciem opcji 'Puck is positive' zmienić jego domyślny ładunek z dodatniego na ujemny.
 
 Możemy również wyczyścić planszę, zatrzymać i wznowić grę, przywrócić krążek na pozycję startową, czy też zmienić masę krążka wpływając co zmienia siłę oddziaływania na niego przez ładunki.
 
@@ -61,7 +61,7 @@ Możemy również wyczyścić planszę, zatrzymać i wznowić grę, przywrócić
     \label{fig:vector_drawing}
 \end{figure}
 
-Dla urozmaicenia i utrudnienia zabawy, użytkownikowi udostępnione zostały poziomy różnicujące poziom rozgrywki. Przeszkody w nich zawarte blokują przebieg krążka, i w razie ich dotknięcia kończy się rozgrywka. Poziom "Custom" dodaje jeszcze specjalny obiekt - izotop, który emituje ładunki w losowej chwili i o zmiennym kierunku zmieniając tym samym rozkład sił na planszy i tym samym jeszcze bardziej wzbogacając zabawę. 
+Dla urozmaicenia i utrudnienia zabawy, użytkownikowi udostępnione zostały poziomy różnicujące poziom rozgrywki. Przeszkody w nich zawarte blokują przebieg krążka, i w razie ich dotknięcia kończy się rozgrywka. Poziom 'Custom' dodaje jeszcze specjalny obiekt - izotop, który emituje ładunki w losowej chwili i o zmiennym kierunku zmieniając tym samym rozkład sił na planszy i tym samym jeszcze bardziej wzbogacając zabawę. 
 
 \begin{figure}[H]
     \centering
@@ -177,7 +177,7 @@ Celem gry jest umieszczenie krążka w bramce za pomocą wstawiania odpowiednich
 W grze dostępne mamy przyciski do zarządzania akutalnym stanem planszy. 'Start' i 'Stop' służą rozpoczynania i zatrzymywania symulacji, 'Reset' ustawia pozycję krążka na domyślną, 'Clear' usuwa ładunki i ustawia pozycję krążka na domyślną. Licznik 'Tries' to ilość naszych błędnych prób, 'Charges' to ilość ładunków na planszy. Istnieje możliwość narysowania trasy przebytej przez krążek za pomocą pola 'Trace' oraz sił pola wektorowego za pomocą pola 'Field'. 
 
 \section{Implementacja i architektura}
-Kontrola rozgrywki realizowana jest z głównej klasy "Game". Zajmuje się ona inicjalizacją i kontrolą poszczególnych komponentów aplikacji. W niej zawarte są grupy obiektów, realizowany jest rendering sceny, a także na bieżąco sprawdzane są warunki rozgrywki. Dostarcza również podstawowych mechanizmów związanych z grą - przeliczania sił, definicji poziomów, czy komunikacją między elementami gry.
+Kontrola rozgrywki realizowana jest z głównej klasy 'Game'. Zajmuje się ona inicjalizacją i kontrolą poszczególnych komponentów aplikacji. W niej zawarte są grupy obiektów, realizowany jest rendering sceny, a także na bieżąco sprawdzane są warunki rozgrywki. Dostarcza również podstawowych mechanizmów związanych z grą - przeliczania sił, definicji poziomów, czy komunikacją między elementami gry.
 
 Następnie, implementując klasy obiektów, zawieramy w nich ich logikę oraz wygląd na planszy. Korzystając ze specjalnej magistrali wiadomości dostarczonej przez główną klasę gry, wszystkie obiekty (również sama gra) mogą wpływać na siebie i informować o różnych zdarzeniach. Rejestrując odpowiednie odpowiedzi na zdarzenia, sterujemy stanem gry, i decydujemy o podjęciu akcji na bazie aktywności gracza.
 
