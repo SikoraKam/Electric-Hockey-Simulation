@@ -16,7 +16,7 @@ export default class ChargesGenerator extends GameObject {
 
       ctx.beginPath();
       ctx.arc(centerX, centerY, 15, 0, 2 * Math.PI);
-      ctx.fillStyle = 'black';
+      ctx.fillStyle = '#6FFFE9';
       ctx.fill();
       ctx.stroke();
     }

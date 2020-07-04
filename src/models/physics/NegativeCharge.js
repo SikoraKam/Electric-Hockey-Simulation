@@ -7,11 +7,4 @@ export default class NegativeCharge extends ElectricCharge {
     this.randomDirection = 2 * Math.PI * Math.random();
     this.randomSpeed = Math.floor(Math.random() * 11) + 1;
   }
-
-  moveCharge() {
-    this.move(
-      this.x + this.randomSpeed * Math.sin(this.randomDirection),
-      this.y + this.randomSpeed * -Math.cos(this.randomDirection)
-    );
-  }
 }

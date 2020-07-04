@@ -109,15 +109,40 @@ export default class Game {
     Object.values(this.groups).forEach((group) => group.update(delta));
     this.handleCollisions();
     if (this.gameDifficulty === GAME_DIFFICULTY.CUSTOM) {
-      this.groups.charges.objects.forEach((charge) => {
-        if (this.listOfMovingCharges.includes(charge)) {
+      this.handleMovingCharges();
+    }
+  }
+
+  isChargeOnScreen(charge, offset = 20) {
+    return (
+      charge.x > 0 - offset &&
+      charge.x < canvas.clientWidth + offset &&
+      charge.y > 0 - offset &&
+      charge.y < canvas.clientHeight + offset
+    );
+  }
+
+  handleMovingCharges() {
+    this.listOfMovingCharges.forEach((charge) => {
+      charge.moveCharge();
+    });
+
+    this.listOfMovingCharges = this.listOfMovingCharges.reduce(
+      (charges, charge) => {
+        if (this.isChargeOnScreen(charge)) {
           charge.moveCharge();
+          charges.push(charge);
+        } else {
+          charge.active = false;
         }
-        if (this.vectorField.isActive) {
-          this.groups.background.removeAll();
-          this.groups.background.add(...this.vectorField.makeVectors());
-        }
-      });
+        return charges;
+      },
+      []
+    );
+
+    if (this.vectorField.isActive) {
+      this.groups.background.removeAll();
+      this.groups.background.add(...this.vectorField.makeVectors());
     }
   }
 
@@ -164,11 +189,17 @@ export default class Game {
   updateForces() {
     this.netForce = { x: 0, y: 0 };
 
-    this.forces.forEach((force) => {
+    this.forces = this.forces.filter((force) => {
+      if (!force.charge1.active || !force.charge2.active) {
+        return false;
+      }
+
       force.calculate();
 
       this.netForce.x += force.x;
       this.netForce.y += force.y;
+
+      return true;
     });
   }
 
